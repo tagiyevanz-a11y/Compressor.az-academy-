@@ -2,224 +2,160 @@
 <html lang="az">
 <head>
 <meta charset="UTF-8">
-<title>Marketing & SMM — Daily Report</title>
+<title>Marketing Daily</title>
 <style>
-body {
-  background: #F4F7FB;
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-}
-.kpi-container {
-  max-width: 580px;
-  margin: 30px auto;
-  padding: 25px;
-  border-radius: 16px;
-  background: #FFFFFF;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-  border-left: 6px solid #0057B7;
-}
-.lang-switcher {
-  text-align: right;
-  margin-bottom: 10px;
-}
-.lang-switcher button {
-  background: #0057B7;
-  color: #fff;
-  border: none;
-  padding: 6px 12px;
-  margin-left: 5px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 13px;
-}
-.lang-switcher button.active {
-  background: #003F8A;
-}
-.kpi-container h2 {
-  font-size: 22px;
-  margin-bottom: 15px;
-  color: #12345B;
-}
-label {
-  font-weight: 600;
-  font-size: 14px;
-  margin-top: 10px;
-  display: block;
-}
-input, textarea, select {
-  width: 100%;
-  padding: 8px 10px;
-  margin-top: 4px;
-  margin-bottom: 12px;
-  border-radius: 8px;
-  border: 1px solid #C9D4E0;
-  box-sizing: border-box;
-}
-button.save-btn {
-  width: 100%;
-  padding: 12px;
-  background: #0057B7;
-  color: white;
-  font-size: 16px;
-  font-weight: bold;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-}
-button.save-btn:hover {
-  background: #004B9F;
-}
-.success {
-  color: green;
-  font-weight: bold;
-}
-.error {
-  color: red;
-  font-weight: bold;
-}
+body{background:#F4F7FB;font-family:Arial;margin:0;padding:0}
+.wrap{max-width:560px;margin:30px auto;padding:25px;background:#fff;border-radius:16px;
+box-shadow:0 4px 12px rgba(0,0,0,0.08);border-left:6px solid #0057B7}
+.lang{text-align:right;margin-bottom:10px}
+.lang button{background:#0057B7;color:#fff;border:none;padding:6px 12px;margin-left:5px;
+border-radius:6px;cursor:pointer;font-size:13px}
+.lang button.active{background:#003F8A}
+h2{color:#12345B;margin-bottom:15px}
+label{font-weight:600;font-size:14px;margin-top:10px;display:block}
+input,textarea{width:100%;padding:8px 10px;margin-top:4px;margin-bottom:10px;
+border-radius:8px;border:1px solid #C9D4E0;box-sizing:border-box}
+button.save{margin-top:15px;width:100%;padding:12px;background:#0057B7;color:#fff;
+border:none;border-radius:8px;font-size:16px;font-weight:bold;cursor:pointer}
+button.save:hover{background:#003F8A}
+#mkStatus.success{color:green;font-weight:bold}
+#mkStatus.error{color:red;font-weight:bold}
 </style>
 </head>
 <body>
-
-<div class="kpi-container">
-  <div class="lang-switcher">
-    <button id="mBtnAZ" class="active">AZ</button>
-    <button id="mBtnRU">RU</button>
+<div class="wrap">
+  <div class="lang">
+    <button id="mAZ" class="active">AZ</button>
+    <button id="mRU">RU</button>
   </div>
 
-  <h2 id="mTitle">Marketing & SMM — gündəlik hesabat</h2>
+  <h2 id="mTitle">Marketing — gündəlik hesabat</h2>
 
-  <form id="marketingForm">
-    <input type="hidden" name="department" value="Marketing">
-    <input type="hidden" name="language" id="mLanguage" value="AZ">
+  <form id="marketingDailyForm">
+    <input type="hidden" name="department" value="Marketing_Daily">
+    <input type="hidden" id="mLang" name="language" value="AZ">
 
     <label id="mLblDate">Tarix:</label>
     <input type="date" name="date" required>
 
-    <label id="mLblEmployee">Əməkdaş:</label>
-    <input type="text" name="employee" placeholder="Ad Soyad" required>
+    <label id="mLblName">Ad:</label>
+    <input type="text" name="employee" required>
 
-    <label id="mLblChannel">Kanal:</label>
-    <input type="text" name="channel" placeholder="Meta / Google / LinkedIn ..." >
-
-    <label id="mLblPosts">Postlar (ədəd):</label>
-    <input type="number" name="posts" min="0" value="0">
-
-    <label id="mLblReels">Reels (ədəd):</label>
-    <input type="number" name="reels" min="0" value="0">
-
-    <label id="mLblStories">Hekayələr (ədəd):</label>
-    <input type="number" name="stories" min="0" value="0">
-
-    <label id="mLblBudget">Reklam büdcəsi (AZN):</label>
-    <input type="number" name="ad_budget" min="0" value="0">
-
-    <label id="mLblLeads">Lidlər (ədəd):</label>
+    <label id="mLblLeads">Gündə reklamdan gələn lidlər (ədəd):</label>
     <input type="number" name="leads" min="0" value="0">
 
-    <label id="mLblCPL">CPL (AZN):</label>
-    <input type="number" name="cpl" min="0" value="0">
+    <label id="mLblCPL">Gündəlik orta CPL (AZN):</label>
+    <input type="number" name="cpl" min="0" step="0.01" value="0">
 
-    <label id="mLblReach">Görüntülənmə / Oхват:</label>
-    <input type="number" name="reach" min="0" value="0">
+    <label id="mLblImpr">Impressions (göstərilmə sayı):</label>
+    <input type="number" name="impressions" min="0" value="0">
 
-    <label id="mLblClicks">Kliklər / Клики:</label>
+    <label id="mLblClicks">Kliklər (reklamdan):</label>
     <input type="number" name="clicks" min="0" value="0">
 
-    <label id="mLblComment">Şərh:</label>
+    <label id="mLblCTR">CTR reklam kampaniyaları (%):</label>
+    <input type="number" name="ctr" id="ctrField" min="0" step="0.01" value="0">
+
+    <label id="mLblLeadQ">Lid keyfiyyəti (% satışa çevrilmə):</label>
+    <input type="number" name="lead_quality" min="0" step="0.01" value="0">
+
+    <label id="mLblROI">Marketing–satış ROI (%):</label>
+    <input type="number" name="roi" min="0" step="0.01" value="0">
+
+    <label id="mLblMedia">Mediaplanın vaxtında icrası (%):</label>
+    <input type="number" name="media_plan" min="0" max="100" step="1" value="100">
+
+    <label id="mLblComment">Marketoloqun şərhi:</label>
     <textarea name="comment" rows="3"></textarea>
 
-    <button type="submit" class="save-btn" id="mBtnSave">Saxla</button>
+    <button type="submit" class="save" id="mBtnSave">Saxla</button>
   </form>
 
-  <p id="mStatus"></p>
+  <p id="mkStatus"></p>
 </div>
 
 <script>
-const M_RU = {
-  title: "Ежедневный отчёт — Marketing & SMM",
-  date: "Дата:",
-  employee: "Сотрудник:",
-  channel: "Канал (Meta / Google / LinkedIn ...):",
-  posts: "Посты (шт):",
-  reels: "Рилсы (шт):",
-  stories: "Сторис (шт):",
-  budget: "Рекламный бюджет (AZN):",
-  leads: "Лиды (шт):",
-  cpl: "CPL (AZN):",
-  reach: "Охват:",
-  clicks: "Клики:",
-  comment: "Комментарий:",
-  save: "Сохранить"
+const MK_AZ = {
+  title:"Marketing — gündəlik hesabat",
+  date:"Tarix:",
+  name:"Ad:",
+  leads:"Gündə reklamdan gələn lidlər (ədəd):",
+  cpl:"Gündəlik orta CPL (AZN):",
+  impr:"Impressions (göstərilmə sayı):",
+  clicks:"Kliklər (reklamdan):",
+  ctr:"CTR reklam kampaniyaları (%):",
+  leadQ:"Lid keyfiyyəti (% satışa çevrilmə):",
+  roi:"Marketing–satış ROI (%):",
+  media:"Mediaplanın vaxtında icrası (%):",
+  comment:"Marketoloqun şərhi:",
+  save:"Saxla"
 };
-
-const M_AZ = {
-  title: "Marketing & SMM — gündəlik hesabat",
-  date: "Tarix:",
-  employee: "Əməkdaş:",
-  channel: "Kanal (Meta / Google / LinkedIn ...):",
-  posts: "Postlar (ədəd):",
-  reels: "Reels (ədəd):",
-  stories: "Hekayələr (ədəd):",
-  budget: "Reklam büdcəsi (AZN):",
-  leads: "Lidlər (ədəd):",
-  cpl: "CPL (AZN):",
-  reach: "Görüntülənmə / Oхват:",
-  clicks: "Kliklər / Клики:",
-  comment: "Şərh:",
-  save: "Saxla"
+const MK_RU = {
+  title:"Ежедневный отчёт — Marketing",
+  date:"Дата:",
+  name:"Имя:",
+  leads:"Количество лидов из рекламы за день:",
+  cpl:"Средний CPL за день (AZN):",
+  impr:"Impressions (показы рекламы):",
+  clicks:"Клики по рекламе:",
+  ctr:"CTR рекламных кампаний (%):",
+  leadQ:"Качество лидов (конверсия в продажу, %):",
+  roi:"Оценка ROI маркетинг–продажи (%):",
+  media:"Ведение медиаплана в срок (%):",
+  comment:"Комментарий маркетолога:",
+  save:"Сохранить"
 };
-
-function mSwitchLang(lang) {
-  const set = lang === "AZ" ? M_AZ : M_RU;
-  document.getElementById("mLanguage").value = lang;
-  document.getElementById("mTitle").innerText = set.title;
-  document.getElementById("mLblDate").innerText = set.date;
-  document.getElementById("mLblEmployee").innerText = set.employee;
-  document.getElementById("mLblChannel").innerText = set.channel;
-  document.getElementById("mLblPosts").innerText = set.posts;
-  document.getElementById("mLblReels").innerText = set.reels;
-  document.getElementById("mLblStories").innerText = set.stories;
-  document.getElementById("mLblBudget").innerText = set.budget;
-  document.getElementById("mLblLeads").innerText = set.leads;
-  document.getElementById("mLblCPL").innerText = set.cpl;
-  document.getElementById("mLblReach").innerText = set.reach;
-  document.getElementById("mLblClicks").innerText = set.clicks;
-  document.getElementById("mLblComment").innerText = set.comment;
-  document.getElementById("mBtnSave").innerText = set.save;
-  document.getElementById("mBtnAZ").classList.toggle("active", lang === "AZ");
-  document.getElementById("mBtnRU").classList.toggle("active", lang === "RU");
+function mkSet(lang){
+  const t = lang==="AZ"?MK_AZ:MK_RU;
+  mLang.value=lang;
+  mTitle.textContent=t.title;
+  mLblDate.textContent=t.date;
+  mLblName.textContent=t.name;
+  mLblLeads.textContent=t.leads;
+  mLblCPL.textContent=t.cpl;
+  mLblImpr.textContent=t.impr;
+  mLblClicks.textContent=t.clicks;
+  mLblCTR.textContent=t.ctr;
+  mLblLeadQ.textContent=t.leadQ;
+  mLblROI.textContent=t.roi;
+  mLblMedia.textContent=t.media;
+  mLblComment.textContent=t.comment;
+  mBtnSave.textContent=t.save;
+  mAZ.classList.toggle("active",lang==="AZ");
+  mRU.classList.toggle("active",lang==="RU");
 }
+mAZ.onclick=()=>mkSet("AZ");
+mRU.onclick=()=>mkSet("RU");
 
-document.getElementById("mBtnAZ").onclick = () => mSwitchLang("AZ");
-document.getElementById("mBtnRU").onclick = () => mSwitchLang("RU");
+// авто-CTR = clicks / impressions * 100
+function recalcCTR(){
+  const impr = Number(document.querySelector('input[name="impressions"]').value||0);
+  const clicks = Number(document.querySelector('input[name="clicks"]').value||0);
+  const ctr = impr>0 ? (clicks/impr*100) : 0;
+  document.getElementById("ctrField").value = ctr.toFixed(2);
+}
+document.querySelector('input[name="impressions"]').addEventListener("input",recalcCTR);
+document.querySelector('input[name="clicks"]').addEventListener("input",recalcCTR);
 
-document.getElementById("marketingForm").addEventListener("submit", async function(e) {
+document.getElementById("marketingDailyForm").addEventListener("submit", async e=>{
   e.preventDefault();
-  const formData = new FormData(this);
+  const formData = new FormData(e.target);
   const data = Object.fromEntries(formData.entries());
-
-  ["posts","reels","stories","ad_budget","leads","cpl","reach","clicks"]
-    .forEach(k => data[k] = Number(data[k] || 0));
-
-  const status = document.getElementById("mStatus");
-
-  try {
-    await fetch("https://script.google.com/macros/s/AKfycbwZIP6pGEzSFJBe_yNmQOkFlPQu7f9ycRjguVC9WY-O1YwU0oPAV4NR_B7zBEUqW1W9/exec", {
-      method: "POST",
-      mode: "no-cors",
-      body: JSON.stringify(data)
+  ["leads","cpl","impressions","clicks","ctr","lead_quality","roi","media_plan"]
+    .forEach(k=>data[k]=Number(data[k]||0));
+  const s=document.getElementById("mkStatus");
+  try{
+    await fetch("https://script.google.com/macros/s/AKfycbwZIP6pGEzSFJBe_yNmQOkFlPQu7f9ycRjguVC9WY-O1YwU0oPAV4NR_B7zBEUqW1W9/exec",{
+      method:"POST",mode:"no-cors",body:JSON.stringify(data)
     });
-    status.innerText = "✔ Uğurla yadda saxlanıldı!";
-    status.className = "success";
-    this.reset();
-  } catch (err) {
-    status.innerText = "❌ Xəta!";
-    status.className = "error";
+    s.textContent="✔ Yadda saxlanıldı / Сохранено";
+    s.className="success";
+    e.target.reset();
+  }catch(err){
+    s.textContent="❌ Xəta / Ошибка";
+    s.className="error";
   }
 });
 </script>
-
 </body>
 </html>
