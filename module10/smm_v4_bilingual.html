@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8" />
+<title>SMM — Daily KPI Report</title>
+
+<style>
+body {
+  background: #F4F7FB;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 580px;
+  margin: 30px auto;
+  padding: 25px;
+  border-radius: 16px;
+  background: #FFFFFF;
+  border-left: 6px solid #0057B7;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+}
+
+.lang-switch {
+  text-align: right;
+  margin-bottom: 10px;
+}
+
+.lang-switch button {
+  background: #0057B7;
+  border: none;
+  padding: 6px 12px;
+  margin-left: 5px;
+  color: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+}
+.lang-switch button.active {
+  background: #003F8A;
+}
+
+h2 {
+  margin-bottom: 18px;
+  color: #12345B;
+  font-size: 22px;
+}
+
+label {
+  font-weight: bold;
+  margin-top: 10px;
+  display: block;
+}
+
+input, textarea, select {
+  width: 100%;
+  padding: 9px;
+  border: 1px solid #C9D4E0;
+  border-radius: 8px;
+  margin-top: 4px;
+  margin-bottom: 12px;
+  box-sizing: border-box;
+}
+
+.toggle-row {
+  display: flex;
+  gap: 10px;
+}
+
+.save-btn {
+  width: 100%;
+  padding: 12px;
+  background: #0057B7;
+  border: none;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.save-btn:hover {
+  background: #003F8A;
+}
+
+.success {
+  color: green;
+}
+.error {
+  color: red;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <div class="lang-switch">
+    <button id="btnAZ" class="active">AZ</button>
+    <button id="btnRU">RU</button>
+  </div>
+
+  <h2 id="title">SMM — gündəlik hesabat</h2>
+
+  <form id="smmForm">
+    <input type="hidden" name="department" value="SMM">
+    <input type="hidden" id="lang" name="lang" value="AZ">
+
+    <label id="lblDate">Tarix:</label>
+    <input type="date" name="date" required>
+
+    <label id="lblEmployee">İşçi:</label>
+    <input type="text" name="employee" required>
+
+    <label id="lblPlatform">Platforma:</label>
+    <select name="platform">
+      <option>Instagram</option>
+      <option>Facebook</option>
+      <option>LinkedIn</option>
+      <option>TikTok</option>
+      <option>YouTube</option>
+    </select>
+
+    <label id="lblPosts">Postlar (ədəd):</label>
+    <input type="number" name="posts" min="0" value="0">
+
+    <label id="lblReels">Reels / Video (ədəd):</label>
+    <input type="number" name="reels" min="0" value="0">
+
+    <label id="lblStories">Story-lər (ədəd):</label>
+    <input type="number" name="stories" min="0" value="0">
+
+    <label id="lblFollowers">İzləyici artımı (ədəd):</label>
+    <input type="number" name="followers" min="0" value="0">
+
+    <label id="lblReach">Reach / Oхват:</label>
+    <input type="number" name="reach" min="0" value="0">
+
+    <label id="lblViews">Baxış sayı (Views):</label>
+    <input type="number" name="views" min="0" value="0">
+
+    <label id="lblClicks">Kliklər (CTR üçün):</label>
+    <input type="number" name="clicks" min="0" value="0">
+
+    <label id="lblER">Engagement Rate (ER%):</label>
+    <input type="number" name="er" min="0" step="0.01" value="0">
+
+    <label id="lblLeads">Daxil olan lidlər (ədəd):</label>
+    <input type="number" name="leads" min="0" value="0">
+
+    <label id="lblBudget">Reklam büdcəsi (AZN):</label>
+    <input type="number" name="ad_budget" min="0" value="0">
+
+    <label id="lblComment">Şərh:</label>
+    <textarea name="comment" rows="3"></textarea>
+
+    <button type="submit" class="save-btn" id="btnSave">Saxla</button>
+  </form>
+
+  <p id="status"></p>
+
+</div>
+
+<script>
+const RU = {
+  title: "Ежедневный отчёт — SMM",
+  date: "Дата:",
+  employee: "Сотрудник:",
+  platform: "Платформа:",
+  posts: "Посты (шт):",
+  reels: "Reels / Видео (шт):",
+  stories: "Сторис (шт):",
+  followers: "Рост подписчиков:",
+  reach: "Охват:",
+  views: "Просмотры:",
+  clicks: "Клики (CTR):",
+  er: "Engagement Rate (ER%):",
+  leads: "Лиды (шт):",
+  budget: "Рекламный бюджет (AZN):",
+  comment: "Комментарий:",
+  save: "Сохранить"
+};
+
+const AZ = {
+  title: "SMM — gündəlik hesabat",
+  date: "Tarix:",
+  employee: "İşçi:",
+  platform: "Platforma:",
+  posts: "Postlar (ədəd):",
+  reels: "Reels / Video (ədəd):",
+  stories: "Story-lər (ədəd):",
+  followers: "İzləyici artımı:",
+  reach: "Reach / Oхват:",
+  views: "Baxış sayı:",
+  clicks: "Kliklər (CTR):",
+  er: "Engagement Rate (ER%):",
+  leads: "Daxil olan lidlər (ədəd):",
+  budget: "Reklam büdcəsi (AZN):",
+  comment: "Şərh:",
+  save: "Saxla"
+};
+
+function switchLang(lang) {
+  const set = lang === "AZ" ? AZ : RU;
+
+  document.getElementById("title").innerText = set.title;
+  document.getElementById("lblDate").innerText = set.date;
+  document.getElementById("lblEmployee").innerText = set.employee;
+  document.getElementById("lblPlatform").innerText = set.platform;
+  document.getElementById("lblPosts").innerText = set.posts;
+  document.getElementById("lblReels").innerText = set.reels;
+  document.getElementById("lblStories").innerText = set.stories;
+  document.getElementById("lblFollowers").innerText = set.followers;
+  document.getElementById("lblReach").innerText = set.reach;
+  document.getElementById("lblViews").innerText = set.views;
+  document.getElementById("lblClicks").innerText = set.clicks;
+  document.getElementById("lblER").innerText = set.er;
+  document.getElementById("lblLeads").innerText = set.leads;
+  document.getElementById("lblBudget").innerText = set.budget;
+  document.getElementById("lblComment").innerText = set.comment;
+  document.getElementById("btnSave").innerText = set.save;
+
+  document.getElementById("lang").value = lang;
+
+  document.getElementById("btnAZ").classList.toggle("active", lang === "AZ");
+  document.getElementById("btnRU").classList.toggle("active", lang === "RU");
+}
+
+document.getElementById("btnAZ").onclick = () => switchLang("AZ");
+document.getElementById("btnRU").onclick = () => switchLang("RU");
+
+document.getElementById("smmForm").addEventListener("submit", async function (e) {
+  e.preventDefault();
+
+  const status = document.getElementById("status");
+  const formData = new FormData(this);
+  const data = Object.fromEntries(formData.entries());
+
+  try {
+    await fetch(
+      "https://script.google.com/macros/s/AKfycbwZIP6pGEzSFJBe_yNmQOkFlPQu7f9ycRjguVC9WY-O1YwU0oPAV4NR_B7zBEUqW1W9/exec",
+      {
+        method: "POST",
+        mode: "no-cors",
+        body: JSON.stringify(data),
+      }
+    );
+
+    status.innerText = "✔ Uğurla göndərildi!";
+    status.className = "success";
+    this.reset();
+  } catch (err) {
+    status.innerText = "❌ Xəta!";
+    status.className = "error";
+  }
+});
+</script>
+
+</body>
+</html>

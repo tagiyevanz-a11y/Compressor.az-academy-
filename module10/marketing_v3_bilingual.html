@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<title>Marketing & SMM — Daily Report</title>
+<style>
+body {
+  background: #F4F7FB;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+.kpi-container {
+  max-width: 580px;
+  margin: 30px auto;
+  padding: 25px;
+  border-radius: 16px;
+  background: #FFFFFF;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  border-left: 6px solid #0057B7;
+}
+.lang-switcher {
+  text-align: right;
+  margin-bottom: 10px;
+}
+.lang-switcher button {
+  background: #0057B7;
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  margin-left: 5px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+}
+.lang-switcher button.active {
+  background: #003F8A;
+}
+.kpi-container h2 {
+  font-size: 22px;
+  margin-bottom: 15px;
+  color: #12345B;
+}
+label {
+  font-weight: 600;
+  font-size: 14px;
+  margin-top: 10px;
+  display: block;
+}
+input, textarea, select {
+  width: 100%;
+  padding: 8px 10px;
+  margin-top: 4px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  border: 1px solid #C9D4E0;
+  box-sizing: border-box;
+}
+button.save-btn {
+  width: 100%;
+  padding: 12px;
+  background: #0057B7;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+button.save-btn:hover {
+  background: #004B9F;
+}
+.success {
+  color: green;
+  font-weight: bold;
+}
+.error {
+  color: red;
+  font-weight: bold;
+}
+</style>
+</head>
+<body>
+
+<div class="kpi-container">
+  <div class="lang-switcher">
+    <button id="mBtnAZ" class="active">AZ</button>
+    <button id="mBtnRU">RU</button>
+  </div>
+
+  <h2 id="mTitle">Marketing & SMM — gündəlik hesabat</h2>
+
+  <form id="marketingForm">
+    <input type="hidden" name="department" value="Marketing">
+    <input type="hidden" name="language" id="mLanguage" value="AZ">
+
+    <label id="mLblDate">Tarix:</label>
+    <input type="date" name="date" required>
+
+    <label id="mLblEmployee">Əməkdaş:</label>
+    <input type="text" name="employee" placeholder="Ad Soyad" required>
+
+    <label id="mLblChannel">Kanal:</label>
+    <input type="text" name="channel" placeholder="Meta / Google / LinkedIn ..." >
+
+    <label id="mLblPosts">Postlar (ədəd):</label>
+    <input type="number" name="posts" min="0" value="0">
+
+    <label id="mLblReels">Reels (ədəd):</label>
+    <input type="number" name="reels" min="0" value="0">
+
+    <label id="mLblStories">Hekayələr (ədəd):</label>
+    <input type="number" name="stories" min="0" value="0">
+
+    <label id="mLblBudget">Reklam büdcəsi (AZN):</label>
+    <input type="number" name="ad_budget" min="0" value="0">
+
+    <label id="mLblLeads">Lidlər (ədəd):</label>
+    <input type="number" name="leads" min="0" value="0">
+
+    <label id="mLblCPL">CPL (AZN):</label>
+    <input type="number" name="cpl" min="0" value="0">
+
+    <label id="mLblReach">Görüntülənmə / Oхват:</label>
+    <input type="number" name="reach" min="0" value="0">
+
+    <label id="mLblClicks">Kliklər / Клики:</label>
+    <input type="number" name="clicks" min="0" value="0">
+
+    <label id="mLblComment">Şərh:</label>
+    <textarea name="comment" rows="3"></textarea>
+
+    <button type="submit" class="save-btn" id="mBtnSave">Saxla</button>
+  </form>
+
+  <p id="mStatus"></p>
+</div>
+
+<script>
+const M_RU = {
+  title: "Ежедневный отчёт — Marketing & SMM",
+  date: "Дата:",
+  employee: "Сотрудник:",
+  channel: "Канал (Meta / Google / LinkedIn ...):",
+  posts: "Посты (шт):",
+  reels: "Рилсы (шт):",
+  stories: "Сторис (шт):",
+  budget: "Рекламный бюджет (AZN):",
+  leads: "Лиды (шт):",
+  cpl: "CPL (AZN):",
+  reach: "Охват:",
+  clicks: "Клики:",
+  comment: "Комментарий:",
+  save: "Сохранить"
+};
+
+const M_AZ = {
+  title: "Marketing & SMM — gündəlik hesabat",
+  date: "Tarix:",
+  employee: "Əməkdaş:",
+  channel: "Kanal (Meta / Google / LinkedIn ...):",
+  posts: "Postlar (ədəd):",
+  reels: "Reels (ədəd):",
+  stories: "Hekayələr (ədəd):",
+  budget: "Reklam büdcəsi (AZN):",
+  leads: "Lidlər (ədəd):",
+  cpl: "CPL (AZN):",
+  reach: "Görüntülənmə / Oхват:",
+  clicks: "Kliklər / Клики:",
+  comment: "Şərh:",
+  save: "Saxla"
+};
+
+function mSwitchLang(lang) {
+  const set = lang === "AZ" ? M_AZ : M_RU;
+  document.getElementById("mLanguage").value = lang;
+  document.getElementById("mTitle").innerText = set.title;
+  document.getElementById("mLblDate").innerText = set.date;
+  document.getElementById("mLblEmployee").innerText = set.employee;
+  document.getElementById("mLblChannel").innerText = set.channel;
+  document.getElementById("mLblPosts").innerText = set.posts;
+  document.getElementById("mLblReels").innerText = set.reels;
+  document.getElementById("mLblStories").innerText = set.stories;
+  document.getElementById("mLblBudget").innerText = set.budget;
+  document.getElementById("mLblLeads").innerText = set.leads;
+  document.getElementById("mLblCPL").innerText = set.cpl;
+  document.getElementById("mLblReach").innerText = set.reach;
+  document.getElementById("mLblClicks").innerText = set.clicks;
+  document.getElementById("mLblComment").innerText = set.comment;
+  document.getElementById("mBtnSave").innerText = set.save;
+  document.getElementById("mBtnAZ").classList.toggle("active", lang === "AZ");
+  document.getElementById("mBtnRU").classList.toggle("active", lang === "RU");
+}
+
+document.getElementById("mBtnAZ").onclick = () => mSwitchLang("AZ");
+document.getElementById("mBtnRU").onclick = () => mSwitchLang("RU");
+
+document.getElementById("marketingForm").addEventListener("submit", async function(e) {
+  e.preventDefault();
+  const formData = new FormData(this);
+  const data = Object.fromEntries(formData.entries());
+
+  ["posts","reels","stories","ad_budget","leads","cpl","reach","clicks"]
+    .forEach(k => data[k] = Number(data[k] || 0));
+
+  const status = document.getElementById("mStatus");
+
+  try {
+    await fetch("https://script.google.com/macros/s/AKfycbwZIP6pGEzSFJBe_yNmQOkFlPQu7f9ycRjguVC9WY-O1YwU0oPAV4NR_B7zBEUqW1W9/exec", {
+      method: "POST",
+      mode: "no-cors",
+      body: JSON.stringify(data)
+    });
+    status.innerText = "✔ Uğurla yadda saxlanıldı!";
+    status.className = "success";
+    this.reset();
+  } catch (err) {
+    status.innerText = "❌ Xəta!";
+    status.className = "error";
+  }
+});
+</script>
+
+</body>
+</html>

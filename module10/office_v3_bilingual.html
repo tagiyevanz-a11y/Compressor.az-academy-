@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<title>Office — Daily Report</title>
+<style>
+body {
+  background: #F4F7FB;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+.kpi-container {
+  max-width: 580px;
+  margin: 30px auto;
+  padding: 25px;
+  border-radius: 16px;
+  background: #FFFFFF;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  border-left: 6px solid #0057B7;
+}
+.lang-switcher {
+  text-align: right;
+  margin-bottom: 10px;
+}
+.lang-switcher button {
+  background: #0057B7;
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  margin-left: 5px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+}
+.lang-switcher button.active {
+  background: #003F8A;
+}
+.kpi-container h2 {
+  font-size: 22px;
+  margin-bottom: 15px;
+  color: #12345B;
+}
+label {
+  font-weight: 600;
+  font-size: 14px;
+  margin-top: 10px;
+  display: block;
+}
+input, textarea {
+  width: 100%;
+  padding: 8px 10px;
+  margin-top: 4px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  border: 1px solid #C9D4E0;
+  box-sizing: border-box;
+}
+button.save-btn {
+  width: 100%;
+  padding: 12px;
+  background: #0057B7;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+button.save-btn:hover {
+  background: #004B9F;
+}
+.success {
+  color: green;
+  font-weight: bold;
+}
+.error {
+  color: red;
+  font-weight: bold;
+}
+</style>
+</head>
+<body>
+
+<div class="kpi-container">
+  <div class="lang-switcher">
+    <button id="oBtnAZ" class="active">AZ</button>
+    <button id="oBtnRU">RU</button>
+  </div>
+
+  <h2 id="oTitle">Office manager — gündəlik hesabat</h2>
+
+  <form id="officeForm">
+    <input type="hidden" name="department" value="Office">
+    <input type="hidden" name="language" id="oLanguage" value="AZ">
+
+    <label id="oLblDate">Tarix:</label>
+    <input type="date" name="date" required>
+
+    <label id="oLblEmployee">Əməkdaş:</label>
+    <input type="text" name="employee" required>
+
+    <label id="oLblRequests">Qeydiyyata alınan sorğular:</label>
+    <input type="number" name="requests" min="0" value="0">
+
+    <label id="oLblCalls">Gələn zənglər işlənib:</label>
+    <input type="number" name="calls_processed" min="0" value="0">
+
+    <label id="oLblDocs">Sənədlər hazırlanıb (ədəd):</label>
+    <input type="number" name="docs_prepared" min="0" value="0">
+
+    <label id="oLblMeetings">Görüşlər koordinasiya olunub:</label>
+    <input type="number" name="meetings_coord" min="0" value="0">
+
+    <label id="oLblErrors">Səhvlər (ədəd):</label>
+    <input type="number" name="errors" min="0" value="0">
+
+    <label id="oLblComment">Şərh:</label>
+    <textarea name="comment" rows="3"></textarea>
+
+    <button type="submit" class="save-btn" id="oBtnSave">Saxla</button>
+  </form>
+
+  <p id="oStatus"></p>
+</div>
+
+<script>
+const O_RU = {
+  title: "Ежедневный отчёт — Офис-менеджер",
+  date: "Дата:",
+  employee: "Сотрудник:",
+  requests: "Зарегистрированные запросы:",
+  calls: "Входящие звонки обработаны:",
+  docs: "Подготовлено документов (шт):",
+  meetings: "Координировано встреч:",
+  errors: "Ошибки (шт):",
+  comment: "Комментарий:",
+  save: "Сохранить"
+};
+
+const O_AZ = {
+  title: "Office manager — gündəlik hesabat",
+  date: "Tarix:",
+  employee: "Əməkdaş:",
+  requests: "Qeydiyyata alınan sorğular:",
+  calls: "Gələn zənglər işlənib:",
+  docs: "Sənədlər hazırlanıb (ədəd):",
+  meetings: "Görüşlər koordinasiya olunub:",
+  errors: "Səhvlər (ədəd):",
+  comment: "Şərh:",
+  save: "Saxla"
+};
+
+function oSwitchLang(lang) {
+  const set = lang === "AZ" ? O_AZ : O_RU;
+  document.getElementById("oLanguage").value = lang;
+  document.getElementById("oTitle").innerText = set.title;
+  document.getElementById("oLblDate").innerText = set.date;
+  document.getElementById("oLblEmployee").innerText = set.employee;
+  document.getElementById("oLblRequests").innerText = set.requests;
+  document.getElementById("oLblCalls").innerText = set.calls;
+  document.getElementById("oLblDocs").innerText = set.docs;
+  document.getElementById("oLblMeetings").innerText = set.meetings;
+  document.getElementById("oLblErrors").innerText = set.errors;
+  document.getElementById("oLblComment").innerText = set.comment;
+  document.getElementById("oBtnSave").innerText = set.save;
+  document.getElementById("oBtnAZ").classList.toggle("active", lang === "AZ");
+  document.getElementById("oBtnRU").classList.toggle("active", lang === "RU");
+}
+
+document.getElementById("oBtnAZ").onclick = () => oSwitchLang("AZ");
+document.getElementById("oBtnRU").onclick = () => oSwitchLang("RU");
+
+document.getElementById("officeForm").addEventListener("submit", async function(e) {
+  e.preventDefault();
+  const formData = new FormData(this);
+  const data = Object.fromEntries(formData.entries());
+
+  ["requests","calls_processed","docs_prepared","meetings_coord","errors"]
+    .forEach(k => data[k] = Number(data[k] || 0));
+
+  const status = document.getElementById("oStatus");
+
+  try {
+    await fetch("https://script.google.com/macros/s/AKfycbwZIP6pGEzSFJBe_yNmQOkFlPQu7f9ycRjguVC9WY-O1YwU0oPAV4NR_B7zBEUqW1W9/exec", {
+      method: "POST",
+      mode: "no-cors",
+      body: JSON.stringify(data)
+    });
+    status.innerText = "✔ Uğurla yadda saxlanıldı!";
+    status.className = "success";
+    this.reset();
+  } catch (err) {
+    status.innerText = "❌ Xəta!";
+    status.className = "error";
+  }
+});
+</script>
+
+</body>
+</html>

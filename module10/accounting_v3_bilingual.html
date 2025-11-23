@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<title>Accounting — Daily Report</title>
+<style>
+body {
+  background: #F4F7FB;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+.kpi-container {
+  max-width: 580px;
+  margin: 30px auto;
+  padding: 25px;
+  border-radius: 16px;
+  background: #FFFFFF;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  border-left: 6px solid #0057B7;
+}
+.lang-switcher {
+  text-align: right;
+  margin-bottom: 10px;
+}
+.lang-switcher button {
+  background: #0057B7;
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  margin-left: 5px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+}
+.lang-switcher button.active {
+  background: #003F8A;
+}
+.kpi-container h2 {
+  font-size: 22px;
+  margin-bottom: 15px;
+  color: #12345B;
+}
+label {
+  font-weight: 600;
+  font-size: 14px;
+  margin-top: 10px;
+  display: block;
+}
+input, textarea, select {
+  width: 100%;
+  padding: 8px 10px;
+  margin-top: 4px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  border: 1px solid #C9D4E0;
+  box-sizing: border-box;
+}
+button.save-btn {
+  width: 100%;
+  padding: 12px;
+  background: #0057B7;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+button.save-btn:hover {
+  background: #004B9F;
+}
+.success {
+  color: green;
+  font-weight: bold;
+}
+.error {
+  color: red;
+  font-weight: bold;
+}
+</style>
+</head>
+<body>
+
+<div class="kpi-container">
+  <div class="lang-switcher">
+    <button id="aBtnAZ" class="active">AZ</button>
+    <button id="aBtnRU">RU</button>
+  </div>
+
+  <h2 id="aTitle">Mühasibat — gündəlik hesabat</h2>
+
+  <form id="accountingForm">
+    <input type="hidden" name="department" value="Accounting">
+    <input type="hidden" name="language" id="aLanguage" value="AZ">
+
+    <label id="aLblDate">Tarix:</label>
+    <input type="date" name="date" required>
+
+    <label id="aLblEmployee">Əməkdaş:</label>
+    <input type="text" name="employee" required>
+
+    <label id="aLblActsOnTime">Vaxtında bağlanan aktlar (ədəd):</label>
+    <input type="number" name="acts_on_time" min="0" value="0">
+
+    <label id="aLblActsDelay">Gecikmiş aktlar (ədəd):</label>
+    <input type="number" name="acts_delayed" min="0" value="0">
+
+    <label id="aLblMonthClosed">Ay bağlanıb?</label>
+    <select name="month_closed">
+      <option value="Bəli">Bəli / Да</option>
+      <option value="Xeyr">Xeyr / Нет</option>
+    </select>
+
+    <label id="aLblReports">Smeta və hesabatlar hazırlanıb?</label>
+    <select name="reports_prepared">
+      <option value="Bəli">Bəli / Да</option>
+      <option value="Xeyr">Xeyr / Нет</option>
+    </select>
+
+    <label id="aLblDebitors">Debitor borcları nəzarətdə?</label>
+    <select name="receivables_ok">
+      <option value="Bəli">Bəli / Да</option>
+      <option value="Xeyr">Xeyr / Нет</option>
+    </select>
+
+    <label id="aLblComment">Şərh:</label>
+    <textarea name="comment" rows="3"></textarea>
+
+    <button type="submit" class="save-btn" id="aBtnSave">Saxla</button>
+  </form>
+
+  <p id="aStatus"></p>
+</div>
+
+<script>
+const A_RU = {
+  title: "Ежедневный отчёт — Бухгалтерия",
+  date: "Дата:",
+  employee: "Сотрудник:",
+  acts_on_time: "Актов вовремя (шт):",
+  acts_delayed: "Актов с задержкой (шт):",
+  month_closed: "Месяц закрыт?",
+  reports: "Сметы и отчёты подготовлены?",
+  receivables: "Дебиторка под контролем?",
+  comment: "Комментарий:",
+  save: "Сохранить"
+};
+
+const A_AZ = {
+  title: "Mühasibat — gündəlik hesabat",
+  date: "Tarix:",
+  employee: "Əməkdaş:",
+  acts_on_time: "Vaxtında bağlanan aktlar (ədəd):",
+  acts_delayed: "Gecikmiş aktlar (ədəd):",
+  month_closed: "Ay bağlanıb?",
+  reports: "Smeta və hesabatlar hazırlanıb?",
+  receivables: "Debitor borcları nəzarətdə?",
+  comment: "Şərh:",
+  save: "Saxla"
+};
+
+function aSwitchLang(lang) {
+  const set = lang === "AZ" ? A_AZ : A_RU;
+  document.getElementById("aLanguage").value = lang;
+  document.getElementById("aTitle").innerText = set.title;
+  document.getElementById("aLblDate").innerText = set.date;
+  document.getElementById("aLblEmployee").innerText = set.employee;
+  document.getElementById("aLblActsOnTime").innerText = set.acts_on_time;
+  document.getElementById("aLblActsDelay").innerText = set.acts_delayed;
+  document.getElementById("aLblMonthClosed").innerText = set.month_closed;
+  document.getElementById("aLblReports").innerText = set.reports;
+  document.getElementById("aLblDebitors").innerText = set.receivables;
+  document.getElementById("aLblComment").innerText = set.comment;
+  document.getElementById("aBtnSave").innerText = set.save;
+  document.getElementById("aBtnAZ").classList.toggle("active", lang === "AZ");
+  document.getElementById("aBtnRU").classList.toggle("active", lang === "RU");
+}
+
+document.getElementById("aBtnAZ").onclick = () => aSwitchLang("AZ");
+document.getElementById("aBtnRU").onclick = () => aSwitchLang("RU");
+
+document.getElementById("accountingForm").addEventListener("submit", async function(e) {
+  e.preventDefault();
+  const formData = new FormData(this);
+  const data = Object.fromEntries(formData.entries());
+
+  ["acts_on_time","acts_delayed"].forEach(k => data[k] = Number(data[k] || 0));
+
+  const status = document.getElementById("aStatus");
+
+  try {
+    await fetch("https://script.google.com/macros/s/AKfycbwZIP6pGEzSFJBe_yNmQOkFlPQu7f9ycRjguVC9WY-O1YwU0oPAV4NR_B7zBEUqW1W9/exec", {
+      method: "POST",
+      mode: "no-cors",
+      body: JSON.stringify(data)
+    });
+    status.innerText = "✔ Uğurla yadda saxlanıldı!";
+    status.className = "success";
+    this.reset();
+  } catch (err) {
+    status.innerText = "❌ Xəta!";
+    status.className = "error";
+  }
+});
+</script>
+
+</body>
+</html>
