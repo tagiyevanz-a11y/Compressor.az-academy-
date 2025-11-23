@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>KPI — Servis Meneceri / Сервис-менеджер</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- html2pdf -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: #f0f4f9;
+      font-family: system-ui, sans-serif;
+      color: #0f172a;
+    }
+    #kpi-wrap {
+      max-width: 1100px;
+      margin: 20px auto;
+      padding: 22px;
+      background: #fff;
+      border-radius: 18px;
+      border: 1px solid #d9e3f2;
+      box-shadow: 0 6px 20px rgba(0,82,165,0.12);
+    }
+    .kpi-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+    .kpi-role {
+      font-size: 22px;
+      font-weight: 700;
+      color: #003a78;
+    }
+    .kpi-role-sub {
+      font-size: 13px;
+      color: #6b7280;
+    }
+    .btn-primary {
+      background: #0052a5;
+      color: white;
+      border: none;
+      border-radius: 999px;
+      padding: 10px 18px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 8px 18px rgba(0,82,165,0.25);
+    }
+    .btn-primary:hover {
+      background: #004488;
+      transform: translateY(-1px);
+    }
+
+    .charts-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+    @media (max-width: 900px) {
+      .charts-row { grid-template-columns: 1fr; }
+    }
+
+    .chart-card {
+      padding: 14px;
+      border-radius: 14px;
+      background: #f6f9ff;
+      border: 1px solid #d8e4f7;
+    }
+    .chart-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #003a78;
+      margin-bottom: 4px;
+    }
+    .chart-sub {
+      font-size: 11px;
+      color: #6b7280;
+      margin-bottom: 8px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #ffffff;
+      font-size: 12px;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid #dce4ef;
+    }
+    thead {
+      background: #d8eaff;
+    }
+    th, td {
+      padding: 7px 8px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    th {
+      color: #003a78;
+      font-weight: 600;
+      font-size: 11px;
+    }
+    td input {
+      width: 100%;
+      padding: 5px;
+      border-radius: 8px;
+      border: 1px solid #cdd6e8;
+      background: #f0f4fa;
+    }
+    td input:focus {
+      border-color: #0052a5;
+      background: #fff;
+    }
+    .kpi-name {
+      font-weight: 600;
+      color: #002f63;
+    }
+    .kpi-result {
+      text-align: center;
+      font-weight: 700;
+      font-size: 12px;
+    }
+    .good { color: #16a34a; }
+    .neutral { color: #6b7280; }
+    .bad { color: #dc2626; }
+
+    .footer-note {
+      text-align: right;
+      font-size: 11px;
+      color: #9ca3af;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+
+<body>
+<div id="kpi-wrap">
+
+  <header class="kpi-header">
+    <div>
+      <div class="kpi-role">Servis Meneceri / Сервис-менеджер</div>
+      <div class="kpi-role-sub">KPI formu – Plan / Fakt / Analitika</div>
+    </div>
+
+    <button class="btn-primary" onclick="exportToPDF()">📄 Скачать PDF</button>
+  </header>
+
+  <!-- GRAPHICS -->
+  <section class="charts-row">
+    <div class="chart-card">
+      <div class="chart-title">Ümumi KPI icrası</div>
+      <div class="chart-sub">Orta % göstərici üzrə dairəvi diaqram</div>
+      <canvas id="kpiDonut"></canvas>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-title">Plan vs Fakt (cəmi)</div>
+      <div class="chart-sub">Plan və Fakt üzrə cəmi müqayisə</div>
+      <canvas id="kpiBar"></canvas>
+    </div>
+  </section>
+
+  <!-- KPI TABLE -->
+  <section>
+    <table>
+      <thead>
+      <tr>
+        <th>KPI</th>
+        <th>Plan</th>
+        <th>Fakt</th>
+        <th>İcra, %</th>
+        <th>Şərh</th>
+      </tr>
+      </thead>
+
+      <tbody>
+
+      <!-- 1 -->
+      <tr data-kpi-row>
+        <td class="kpi-name">Aylıq servis çıxışlarının sayı</td>
+        <td><input class="kpi-plan" type="number" placeholder=""></td>
+        <td><input class="kpi-fact" type="number" placeholder=""></td>
+        <td class="kpi-result">–</td>
+        <td><input type="text"></td>
+      </tr>
+
+      <!-- 2 -->
+      <tr data-kpi-row>
+        <td class="kpi-name">Vaxtında tamamlanan servis işləri (%)</td>
+        <td><input class="kpi-plan" type="number" placeholder="95%"></td>
+        <td><input class="kpi-fact" type="number" placeholder=""></td>
+        <td class="kpi-result">–</td>
+        <td><input type="text"></td>
+      </tr>
+
+      <!-- 3 -->
+      <tr data-kpi-row>
+        <td class="kpi-name">Reaksiya vaxtı (dəq)</td>
+        <td><input class="kpi-plan" type="number" placeholder="30 dəq"></td>
+        <td><input class="kpi-fact" type="number"></td>
+        <td class="kpi-result">–</td>
+        <td><input type="text"></td>
+      </tr>
+
+      <!-- 4 -->
+      <tr data-kpi-row>
+        <td class="kpi-name">Servis gəliri (AZN)</td>
+        <td><input class="kpi-plan" type="number"></td>
+        <td><input class="kpi-fact" type="number"></td>
+        <td class="kpi-result">–</td>
+        <td><input type="text"></td>
+      </tr>
+
+      <!-- 5 -->
+      <tr data-kpi-row>
+        <td class="kpi-name">1 TO başına orta gəlir (AZN)</td>
+        <td><input class="kpi-plan" type="number"></td>
+        <td><input class="kpi-fact" type="number"></td>
+        <td class="kpi-result">–</td>
+        <td><input type="text"></td>
+      </tr>
+
+      <!-- 6 -->
+      <tr data-kpi-row>
+        <td class="kpi-name">ZİP mövcudluğu (%)</td>
+        <td><input class="kpi-plan" type="number" placeholder="100"></td>
+        <td><input class="kpi-fact" type="number"></td>
+        <td class="kpi-result">–</td>
+        <td><input type="text"></td>
+      </tr>
+
+      <!-- 7 -->
+      <tr data-kpi-row>
+        <td class="kpi-name">ZİP uçotunda səhvlər (ədəd)</td>
+        <td><input class="kpi-plan" type="number" placeholder="0–1"></td>
+        <td><input class="kpi-fact" type="number"></td>
+        <td class="kpi-result">–</td>
+        <td><input type="text"></td>
+      </tr>
+
+      <!-- 8 -->
+      <tr data-kpi-row>
+        <td class="kpi-name">İnventarizasiyanın vaxtında icrası (%)</td>
+        <td><input class="kpi-plan" type="number" placeholder="100%"></td>
+        <td><input class="kpi-fact" type="number"></td>
+        <td class="kpi-result">–</td>
+        <td><input type="text"></td>
+      </tr>
+
+      <!-- 9 -->
+      <tr data-kpi-row>
+        <td class="kpi-name">Təkrar servis müraciətləri (ədəd)</td>
+        <td><input class="kpi-plan" type="number" placeholder="0–1"></td>
+        <td><input class="kpi-fact" type="number"></td>
+        <td class="kpi-result">–</td>
+        <td><input type="text"></td>
+      </tr>
+
+      </tbody>
+    </table>
+  </section>
+
+  <div class="footer-note">
+    Formanı doldurduqdan sonra PDF kimi yükləyə bilərsiniz.
+  </div>
+
+</div>
+
+<script>
+  let donutChart, barChart;
+
+  function initCharts() {
+    donutChart = new Chart(document.getElementById('kpiDonut'), {
+      type: 'doughnut',
+      data: {
+        labels: ['İcra olunub', 'Qalıq'],
+        datasets: [{
+          data: [0, 100],
+          backgroundColor: ['#0052a5', '#dbe8f8']
+        }]
+      },
+      options: {
+        cutout: '65%',
+        plugins: { legend: { position: 'bottom' } }
+      }
+    });
+
+    barChart = new Chart(document.getElementById('kpiBar'), {
+      type: 'bar',
+      data: {
+        labels: ['Plan', 'Fakt'],
+        datasets: [{
+          backgroundColor: ['#60a5fa', '#0052a5'],
+          data: [0, 0]
+        }]
+      },
+      options: {
+        scales: { y: { beginAtZero: true } },
+        plugins: { legend: { display: false } }
+      }
+    });
+  }
+
+  function recalcKPI() {
+    const rows = document.querySelectorAll('[data-kpi-row]');
+    let totalPlan = 0, totalFact = 0;
+    let sumPercent = 0, countPercent = 0;
+
+    rows.forEach(row => {
+      const plan = parseFloat(row.querySelector('.kpi-plan').value) || 0;
+      const fact = parseFloat(row.querySelector('.kpi-fact').value) || 0;
+      const cell = row.querySelector('.kpi-result');
+
+      let percent = '–';
+      cell.className = 'kpi-result neutral';
+
+      if (plan > 0) {
+        const p = (fact / plan) * 100;
+        const r = Math.round(p);
+        percent = r + '%';
+
+        sumPercent += p;
+        countPercent++;
+
+        if (p >= 100) cell.classList.add('good');
+        else if (p >= 80) cell.classList.add('neutral');
+        else cell.classList.add('bad');
+      }
+
+      cell.textContent = percent;
+
+      totalPlan += plan;
+      totalFact += fact;
+    });
+
+    const avg = countPercent ? sumPercent / countPercent : 0;
+    donutChart.data.datasets[0].data = [avg, Math.max(100 - avg, 0)];
+    donutChart.update();
+
+    barChart.data.datasets[0].data = [totalPlan, totalFact];
+    barChart.update();
+  }
+
+  function exportToPDF() {
+    html2pdf()
+      .from(document.getElementById('kpi-wrap'))
+      .set({
+        margin: 10,
+        filename: 'kpi_service_manager.pdf',
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'mm', format: 'a4' }
+      }).save();
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    initCharts();
+    document.querySelectorAll('.kpi-plan, .kpi-fact').forEach(input => {
+      input.addEventListener('input', recalcKPI);
+    });
+  });
+</script>
+
+</body>
+</html>
