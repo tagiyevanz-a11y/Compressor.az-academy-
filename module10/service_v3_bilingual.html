@@ -2,7 +2,8 @@
 <html lang="az">
 <head>
 <meta charset="UTF-8">
-<title>Accounting — Daily Report</title>
+<title>Service Report — AZ/RU</title>
+
 <style>
 body {
   background: #F4F7FB;
@@ -10,66 +11,96 @@ body {
   margin: 0;
   padding: 0;
 }
-.kpi-container {
-  max-width: 580px;
+
+.container {
+  max-width: 640px;
   margin: 30px auto;
   padding: 25px;
   border-radius: 16px;
-  background: #FFFFFF;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  background: #ffffff;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
   border-left: 6px solid #0057B7;
 }
-.lang-switcher {
+
+/* Language Switcher */
+.lang-switch {
   text-align: right;
   margin-bottom: 10px;
 }
-.lang-switcher button {
+
+.lang-switch button {
   background: #0057B7;
-  color: #fff;
   border: none;
   padding: 6px 12px;
   margin-left: 5px;
+  color: white;
   border-radius: 6px;
   cursor: pointer;
-  font-size: 13px;
 }
-.lang-switcher button.active {
+.lang-switch button.active {
   background: #003F8A;
 }
-.kpi-container h2 {
-  font-size: 22px;
-  margin-bottom: 15px;
+
+h2 {
   color: #12345B;
+  margin-bottom: 15px;
 }
+
+/* Form */
 label {
-  font-weight: 600;
-  font-size: 14px;
-  margin-top: 10px;
   display: block;
+  margin-top: 10px;
+  font-weight: 600;
+  color: #12345B;
 }
 input, textarea, select {
   width: 100%;
-  padding: 8px 10px;
+  padding: 10px;
   margin-top: 4px;
-  margin-bottom: 12px;
   border-radius: 8px;
   border: 1px solid #C9D4E0;
   box-sizing: border-box;
 }
+
+/* Toggle Buttons (Variant C) */
+.toggle-group {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.toggle-btn {
+  flex: 1;
+  padding: 10px;
+  background: #E6ECF5;
+  border-radius: 8px;
+  text-align: center;
+  cursor: pointer;
+  border: 2px solid transparent;
+  user-select: none;
+}
+.toggle-btn.active {
+  background: #0057B7;
+  color: white;
+  border-color: #003F8A;
+}
+
+/* Save Button */
 button.save-btn {
+  margin-top: 20px;
   width: 100%;
   padding: 12px;
   background: #0057B7;
   color: white;
-  font-size: 16px;
-  font-weight: bold;
-  border-radius: 8px;
   border: none;
+  border-radius: 8px;
+  font-size: 16px;
   cursor: pointer;
 }
 button.save-btn:hover {
-  background: #004B9F;
+  background: #003F8A;
 }
+
 .success {
   color: green;
   font-weight: bold;
@@ -78,116 +109,251 @@ button.save-btn:hover {
   color: red;
   font-weight: bold;
 }
+.hidden {
+  display: none;
+}
 </style>
 </head>
+
 <body>
 
-<div class="kpi-container">
-  <div class="lang-switcher">
-    <button id="aBtnAZ" class="active">AZ</button>
-    <button id="aBtnRU">RU</button>
+<div class="container">
+
+  <div class="lang-switch">
+    <button id="btnAZ" class="active">AZ</button>
+    <button id="btnRU">RU</button>
   </div>
 
-  <h2 id="aTitle">Mühasibat — gündəlik hesabat</h2>
+  <h2 id="formTitle">Servis Hesabatı</h2>
 
-  <form id="accountingForm">
-    <input type="hidden" name="department" value="Accounting">
-    <input type="hidden" name="language" id="aLanguage" value="AZ">
+  <form id="serviceForm">
+    <input type="hidden" name="department" value="Service">
+    <input type="hidden" id="language" name="language" value="AZ">
 
-    <label id="aLblDate">Tarix:</label>
+    <!-- Basic -->
+    <label id="lblDate">Tarix:</label>
     <input type="date" name="date" required>
 
-    <label id="aLblEmployee">Əməkdaş:</label>
-    <input type="text" name="employee" required>
+    <label id="lblEngineer">İşçi:</label>
+    <input type="text" name="engineer" required>
 
-    <label id="aLblActsOnTime">Vaxtında bağlanan aktlar (ədəd):</label>
-    <input type="number" name="acts_on_time" min="0" value="0">
+    <label id="lblClient">Müştəri:</label>
+    <input type="text" name="client">
 
-    <label id="aLblActsDelay">Gecikmiş aktlar (ədəd):</label>
-    <input type="number" name="acts_delayed" min="0" value="0">
+    <!-- Main Indicators -->
+    <label id="lblVisits">Çıxış sayı:</label>
+    <input type="number" name="visits" min="0" value="0">
 
-    <label id="aLblMonthClosed">Ay bağlanıb?</label>
-    <select name="month_closed">
-      <option value="Bəli">Bəli / Да</option>
-      <option value="Xeyr">Xeyr / Нет</option>
-    </select>
+    <label id="lblTO">TO yerinə yetirilib:</label>
+    <input type="number" name="to_done" min="0" value="0">
 
-    <label id="aLblReports">Smeta və hesabatlar hazırlanıb?</label>
-    <select name="reports_prepared">
-      <option value="Bəli">Bəli / Да</option>
-      <option value="Xeyr">Xeyr / Нет</option>
-    </select>
+    <label id="lblDiag">Diaqnostika:</label>
+    <input type="number" name="diagnostics" min="0" value="0">
 
-    <label id="aLblDebitors">Debitor borcları nəzarətdə?</label>
-    <select name="receivables_ok">
-      <option value="Bəli">Bəli / Да</option>
-      <option value="Xeyr">Xeyr / Нет</option>
-    </select>
+    <label id="lblRepair">Təmirlər:</label>
+    <input type="number" name="repairs" min="0" value="0">
 
-    <label id="aLblComment">Şərh:</label>
+    <label id="lblInstall">Quraşdırma:</label>
+    <input type="number" name="install" min="0" value="0">
+
+    <label id="lblEmergency">Təcili çağırış:</label>
+    <input type="number" name="emergency" min="0" value="0">
+
+    <label id="lblRepeat">Eyni problemə təkrar səfər:</label>
+    <div class="toggle-group" data-name="repeat_visit">
+      <div class="toggle-btn">Bəli</div>
+      <div class="toggle-btn active">Xeyr</div>
+    </div>
+    <input type="hidden" name="repeat_visit" value="Xeyr">
+
+    <label id="lblDistance">Məsafə (km):</label>
+    <input type="number" name="distance" min="0" value="0">
+
+    <!-- Document Control -->
+    <label id="lblAct">Akt vaxtında bağlıdır?</label>
+    <div class="toggle-group" data-name="act_status">
+      <div class="toggle-btn">Bəli</div>
+      <div class="toggle-btn">Xeyr</div>
+      <div class="toggle-btn active">Servis olmayıb</div>
+    </div>
+    <input type="hidden" name="act_status" value="Servis olmayıb">
+    <textarea name="act_reason" id="actReason" class="hidden" placeholder="Səbəb..."></textarea>
+
+    <label id="lblPhoto">Foto hesabat yüklənib?</label>
+    <div class="toggle-group" data-name="photo_status">
+      <div class="toggle-btn">Bəli</div>
+      <div class="toggle-btn">Xeyr</div>
+      <div class="toggle-btn active">Servis olmayıb</div>
+    </div>
+    <input type="hidden" name="photo_status" value="Servis olmayıb">
+    <textarea name="photo_reason" id="photoReason" class="hidden" placeholder="Səbəb..."></textarea>
+
+    <label id="lblAccounting">Buxalteriyaya göndərilib?</label>
+    <div class="toggle-group" data-name="acc_status">
+      <div class="toggle-btn">Bəli</div>
+      <div class="toggle-btn">Xeyr</div>
+      <div class="toggle-btn active">Servis olmayıb</div>
+    </div>
+    <input type="hidden" name="acc_status" value="Servis olmayıb">
+    <textarea name="acc_reason" id="accReason" class="hidden" placeholder="Səbəb..."></textarea>
+
+    <label id="lblParts">Ehtiyat hissələri düzgün silinib?</label>
+    <div class="toggle-group" data-name="parts_status">
+      <div class="toggle-btn">Bəli</div>
+      <div class="toggle-btn">Xeyr</div>
+      <div class="toggle-btn active">Servis olmayıb</div>
+    </div>
+    <input type="hidden" name="parts_status" value="Servis olmayıb">
+    <textarea name="parts_reason" id="partsReason" class="hidden" placeholder="Səbəb..."></textarea>
+
+    <!-- Finance -->
+    <label id="lblWorkRev">İşlərdən gəlir (AZN):</label>
+    <input type="number" name="work_revenue" min="0" value="0">
+
+    <label id="lblZipRev">Ehtiyat hissələr gəliri (AZN):</label>
+    <input type="number" name="zip_revenue" min="0" value="0">
+
+    <label id="lblTotalRev">Ümumi gəlir (AZN):</label>
+    <input type="number" name="total_revenue" min="0" value="0">
+
+    <!-- Comment -->
+    <label id="lblComment">Şərh:</label>
     <textarea name="comment" rows="3"></textarea>
 
-    <button type="submit" class="save-btn" id="aBtnSave">Saxla</button>
+    <button type="submit" class="save-btn" id="btnSave">Saxla</button>
   </form>
 
-  <p id="aStatus"></p>
+  <p id="status"></p>
 </div>
 
 <script>
-const A_RU = {
-  title: "Ежедневный отчёт — Бухгалтерия",
+// Language Packs
+const RU = {
+  title: "Ежедневный сервисный отчёт",
   date: "Дата:",
-  employee: "Сотрудник:",
-  acts_on_time: "Актов вовремя (шт):",
-  acts_delayed: "Актов с задержкой (шт):",
-  month_closed: "Месяц закрыт?",
-  reports: "Сметы и отчёты подготовлены?",
-  receivables: "Дебиторка под контролем?",
+  engineer: "Инженер:",
+  client: "Клиент:",
+  visits: "Количество выездов:",
+  to: "ТО выполнено:",
+  diag: "Диагностика:",
+  repair: "Ремонт выполнен:",
+  install: "Установка оборудования:",
+  emergency: "Аварийные выезды:",
+  repeat: "Повторный выезд по той же проблеме:",
+  distance: "Расстояние (км):",
+  act: "Акт закрыт в срок?",
+  photo: "Фотоотчёт загружен?",
+  acc: "Передано в бухгалтерию?",
+  parts: "Запчасти списаны правильно?",
+  work_rev: "Выручка за работы (AZN):",
+  zip_rev: "Выручка за ЗИП (AZN):",
+  total_rev: "Общий доход (AZN):",
   comment: "Комментарий:",
-  save: "Сохранить"
+  save: "Сохранить",
+
+  yes: "Да",
+  no: "Нет",
+  n_service: "Сервиса не было"
 };
 
-const A_AZ = {
-  title: "Mühasibat — gündəlik hesabat",
+const AZ = {
+  title: "Servis Hesabatı",
   date: "Tarix:",
-  employee: "Əməkdaş:",
-  acts_on_time: "Vaxtında bağlanan aktlar (ədəd):",
-  acts_delayed: "Gecikmiş aktlar (ədəd):",
-  month_closed: "Ay bağlanıb?",
-  reports: "Smeta və hesabatlar hazırlanıb?",
-  receivables: "Debitor borcları nəzarətdə?",
+  engineer: "İşçi:",
+  client: "Müştəri:",
+  visits: "Çıxış sayı:",
+  to: "TO yerinə yetirilib:",
+  diag: "Diaqnostika:",
+  repair: "Təmirlər:",
+  install: "Quraşdırma:",
+  emergency: "Təcili çağırış:",
+  repeat: "Eyni problemə təkrar səfər:",
+  distance: "Məsafə (km):",
+  act: "Akt vaxtında bağlıdır?",
+  photo: "Foto hesabat yüklənib?",
+  acc: "Buxalteriyaya göndərilib?",
+  parts: "Ehtiyat hissələri düzgün silinib?",
+  work_rev: "İşlərdən gəlir (AZN):",
+  zip_rev: "Ehtiyat hissələr gəliri (AZN):",
+  total_rev: "Ümumi gəlir (AZN):",
   comment: "Şərh:",
-  save: "Saxla"
+  save: "Saxla",
+
+  yes: "Bəli",
+  no: "Xeyr",
+  n_service: "Servis olmayıb"
 };
 
-function aSwitchLang(lang) {
-  const set = lang === "AZ" ? A_AZ : A_RU;
-  document.getElementById("aLanguage").value = lang;
-  document.getElementById("aTitle").innerText = set.title;
-  document.getElementById("aLblDate").innerText = set.date;
-  document.getElementById("aLblEmployee").innerText = set.employee;
-  document.getElementById("aLblActsOnTime").innerText = set.acts_on_time;
-  document.getElementById("aLblActsDelay").innerText = set.acts_delayed;
-  document.getElementById("aLblMonthClosed").innerText = set.month_closed;
-  document.getElementById("aLblReports").innerText = set.reports;
-  document.getElementById("aLblDebitors").innerText = set.receivables;
-  document.getElementById("aLblComment").innerText = set.comment;
-  document.getElementById("aBtnSave").innerText = set.save;
-  document.getElementById("aBtnAZ").classList.toggle("active", lang === "AZ");
-  document.getElementById("aBtnRU").classList.toggle("active", lang === "RU");
+// Switch Language
+function switchLang(lang) {
+  const set = lang === "AZ" ? AZ : RU;
+
+  document.getElementById("formTitle").innerText = set.title;
+  document.getElementById("lblDate").innerText = set.date;
+  document.getElementById("lblEngineer").innerText = set.engineer;
+  document.getElementById("lblClient").innerText = set.client;
+  document.getElementById("lblVisits").innerText = set.visits;
+  document.getElementById("lblTO").innerText = set.to;
+  document.getElementById("lblDiag").innerText = set.diag;
+  document.getElementById("lblRepair").innerText = set.repair;
+  document.getElementById("lblInstall").innerText = set.install;
+  document.getElementById("lblEmergency").innerText = set.emergency;
+  document.getElementById("lblRepeat").innerText = set.repeat;
+  document.getElementById("lblDistance").innerText = set.distance;
+  document.getElementById("lblAct").innerText = set.act;
+  document.getElementById("lblPhoto").innerText = set.photo;
+  document.getElementById("lblAccounting").innerText = set.acc;
+  document.getElementById("lblParts").innerText = set.parts;
+  document.getElementById("lblWorkRev").innerText = set.work_rev;
+  document.getElementById("lblZipRev").innerText = set.zip_rev;
+  document.getElementById("lblTotalRev").innerText = set.total_rev;
+  document.getElementById("lblComment").innerText = set.comment;
+  document.getElementById("btnSave").innerText = set.save;
+
+  document.getElementById("language").value = lang;
+
+  document.getElementById("btnAZ").classList.toggle("active", lang === "AZ");
+  document.getElementById("btnRU").classList.toggle("active", lang === "RU");
 }
 
-document.getElementById("aBtnAZ").onclick = () => aSwitchLang("AZ");
-document.getElementById("aBtnRU").onclick = () => aSwitchLang("RU");
+document.getElementById("btnAZ").onclick = () => switchLang("AZ");
+document.getElementById("btnRU").onclick = () => switchLang("RU");
 
-document.getElementById("accountingForm").addEventListener("submit", async function(e) {
+// Toggle Logic
+document.querySelectorAll(".toggle-group").forEach(group => {
+  const name = group.getAttribute("data-name");
+  const input = document.querySelector(`input[name="${name}"]`);
+
+  group.querySelectorAll(".toggle-btn").forEach(btn => {
+    btn.onclick = () => {
+      group.querySelectorAll(".toggle-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      input.value = btn.innerText;
+
+      // Show Reason if "No"
+      if (name === "act_status") {
+        document.getElementById("actReason").classList.toggle("hidden", btn.innerText !== "Xeyr" && btn.innerText !== "Нет");
+      }
+      if (name === "photo_status") {
+        document.getElementById("photoReason").classList.toggle("hidden", btn.innerText !== "Xeyr" && btn.innerText !== "Нет");
+      }
+      if (name === "acc_status") {
+        document.getElementById("accReason").classList.toggle("hidden", btn.innerText !== "Xeyr" && btn.innerText !== "Нет");
+      }
+      if (name === "parts_status") {
+        document.getElementById("partsReason").classList.toggle("hidden", btn.innerText !== "Xeyr" && btn.innerText !== "Нет");
+      }
+    };
+  });
+});
+
+// Submit
+document.getElementById("serviceForm").addEventListener("submit", async function(e) {
   e.preventDefault();
+
+  const status = document.getElementById("status");
   const formData = new FormData(this);
   const data = Object.fromEntries(formData.entries());
-
-  ["acts_on_time","acts_delayed"].forEach(k => data[k] = Number(data[k] || 0));
-
-  const status = document.getElementById("aStatus");
 
   try {
     await fetch("https://script.google.com/macros/s/AKfycbwZIP6pGEzSFJBe_yNmQOkFlPQu7f9ycRjguVC9WY-O1YwU0oPAV4NR_B7zBEUqW1W9/exec", {
@@ -195,9 +361,11 @@ document.getElementById("accountingForm").addEventListener("submit", async funct
       mode: "no-cors",
       body: JSON.stringify(data)
     });
-    status.innerText = "✔ Uğurla yadda saxlanıldı!";
+
+    status.innerText = "✔ Uğurla göndərildi!";
     status.className = "success";
     this.reset();
+
   } catch (err) {
     status.innerText = "❌ Xəta!";
     status.className = "error";
