@@ -4,86 +4,49 @@
   <meta charset="UTF-8">
   <title>Director Daily Report</title>
   <style>
-    body {
-      background: #F4F7FB;
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-    }
-    .wrap {
-      max-width: 640px;
-      margin: 30px auto;
-      padding: 25px;
-      background: #FFFFFF;
-      border-radius: 16px;
-      border-left: 6px solid #0057B7;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-    }
-    .lang {
-      text-align: right;
-      margin-bottom: 10px;
-    }
-    .lang button {
-      background: #0057B7;
-      color: #fff;
-      border: none;
-      padding: 6px 12px;
-      margin-left: 5px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 13px;
-    }
-    .lang button.active {
-      background: #003F8A;
-    }
-    h2 {
-      color: #12345B;
-      margin-bottom: 15px;
-    }
-    label {
-      font-weight: 600;
-      font-size: 14px;
-      margin-top: 10px;
-      display: block;
-    }
-    input, select, textarea {
-      width: 100%;
-      padding: 8px 10px;
-      margin-top: 4px;
-      margin-bottom: 10px;
-      border-radius: 8px;
-      border: 1px solid #C9D4E0;
-      box-sizing: border-box;
-    }
-    textarea {
-      min-height: 70px;
-    }
-    button.save {
-      margin-top: 15px;
-      width: 100%;
-      padding: 12px;
-      background: #0057B7;
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    button.save:hover {
-      background: #003F8A;
-    }
-    #status.success {
-      color: green;
-      font-weight: bold;
-    }
-    #status.error {
-      color: red;
-      font-weight: bold;
-    }
+    body { background:#F4F7FB;font-family:Arial,sans-serif;margin:0;padding:0; }
+    .wrap { max-width:640px;margin:30px auto;padding:25px;background:#fff;border-radius:16px;border-left:6px solid #0057B7;box-shadow:0 4px 16px rgba(0,0,0,.08);}
+    .lang{ text-align:right;margin-bottom:10px;}
+    .lang button{ background:#0057B7;color:#fff;border:none;padding:6px 12px;margin-left:5px;border-radius:6px;cursor:pointer;font-size:13px;}
+    .lang button.active{ background:#003F8A;}
+    h2{ color:#12345B;margin-bottom:15px;}
+    label{ font-weight:600;font-size:14px;margin-top:10px;display:block;}
+    input,select,textarea{ width:100%;padding:8px 10px;margin-top:4px;margin-bottom:10px;border-radius:8px;border:1px solid #C9D4E0;box-sizing:border-box;}
+    textarea{ min-height:80px;}
+    button.save{ margin-top:15px;width:100%;padding:12px;background:#0057B7;color:#fff;border:none;border-radius:8px;font-size:16px;font-weight:bold;cursor:pointer;}
+    button.save:hover{ background:#003F8A;}
+    #status.success{ color:green;font-weight:bold;}
+    #status.error{ color:red;font-weight:bold;}
+    .deny{display:flex;align-items:center;justify-content:center;height:100vh;background:#fff;}
+    .deny .box{max-width:420px;border-left:6px solid #c00000;padding:24px;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,.12);}
+    .deny h2{color:#c00000;margin:0 0 10px;}
   </style>
 </head>
+
 <body>
+
+<!-- ✅ ЗАЩИТА: доступ только из твоего Bitrix24 -->
+<script>
+(function(){
+  const allowedHosts = [
+    "bitrix24.com",
+    "bitrix24.ru",
+    "anzenergyllc.bitrix24.ru"   // ✅ ТВОЙ ПОРТАЛ
+  ];
+  const ref = document.referrer || "";
+  const ok = allowedHosts.some(h => ref.includes(h));
+  if(!ok){
+    document.body.innerHTML = `
+      <div class="deny">
+        <div class="box">
+          <h2>Доступ запрещён</h2>
+          <p>Откройте форму из Bitrix24 портала.</p>
+        </div>
+      </div>`;
+  }
+})();
+</script>
+
 <div class="wrap">
   <div class="lang">
     <button id="btnAZ" class="active">AZ</button>
@@ -96,51 +59,42 @@
     <input type="hidden" name="department" value="Director_Daily">
     <input type="hidden" id="lang" name="language" value="AZ">
 
-    <!-- Date & Name -->
     <label id="lblDate">Tarix:</label>
     <input type="date" name="date" required>
 
     <label id="lblName">Ad:</label>
     <input type="text" name="employee" required>
 
-    <!-- 1. Анализ отчётов сотрудников — Да/Нет -->
     <label id="lblReportAnalysis">İşçi hesabatlarının analizi:</label>
     <select name="report_analysis">
       <option value="Bəli / Да">Bəli / Да</option>
       <option value="Xeyr / Нет">Xeyr / Нет</option>
     </select>
 
-    <!-- 2. Работа в CRM (описать проделанную работу по сделкам) -->
-    <label id="lblCRMWork">CRM işi (görülən işlər üzrə şərh):</label>
-    <textarea name="crm_work" placeholder="Bugün CRM-də hansı işlər görüldü?"></textarea>
+    <label id="lblCRMWork">CRM işi:</label>
+    <textarea name="crm_work" placeholder="Сделки, статусы, комментарии..."></textarea>
 
-    <!-- 3. Работа с задачами Битрикс24 — закрыто / перенесено / в риске -->
-    <label id="lblTasksStatus">Bitrix24 tapşırıqları — status:</label>
+    <label id="lblTasksStatus">Bitrix24 tapşırıqları:</label>
     <select name="tasks_status">
       <option value="Bağlandı / Закрыто">Bağlandı / Закрыто</option>
       <option value="Köçürüldü / Перенесено">Köçürüldü / Перенесено</option>
       <option value="Riskdə / В риске">Riskdə / В риске</option>
     </select>
 
-    <!-- 4. Контроль дисциплины сотрудников (кто нарушил / кто не сдал) -->
-    <label id="lblDiscipline">İntizam nəzarəti (kim pozdu / kim təhvil vermədi):</label>
-    <textarea name="discipline_control" placeholder="Gecikmə, hesabat verməmə, intizam pozuntuları..."></textarea>
+    <label id="lblDiscipline">İntizam nəzarəti:</label>
+    <textarea name="discipline_control" placeholder="Кто нарушил / кто не сдал"></textarea>
 
-    <!-- 5. Клиентские проблемы за день и решения -->
-    <label id="lblClientIssues">Müştəri problemləri və həllər:</label>
-    <textarea name="client_issues" placeholder="Müştəri şikayətləri, problemlər və verilən həllər..."></textarea>
+    <label id="lblClientIssues">Müştəri problemləri:</label>
+    <textarea name="client_issues" placeholder="Проблемы клиентов и решения"></textarea>
 
-    <!-- 6. Финансовый контроль дня (входящие / исходящие) -->
-    <label id="lblFinancial">Günün maliyyə nəzarəti (mədaxil / məxaric):</label>
-    <textarea name="financial_control" placeholder="Günün əsas maliyyə hərəkətləri..."></textarea>
+    <label id="lblFinancial">Maliyyə nəzarəti:</label>
+    <textarea name="financial_control" placeholder="Входящие / исходящие"></textarea>
 
-    <!-- 7. Принятые решения (Decision Log) -->
-    <label id="lblDecisions">Qəbul edilmiş qərarlar (Decision Log):</label>
-    <textarea name="decisions" placeholder="Bu gün qəbul etdiyiniz əsas qərarlar..."></textarea>
+    <label id="lblDecisions">Decision Log:</label>
+    <textarea name="decisions" placeholder="Принятые решения сегодня"></textarea>
 
-    <!-- 8. План директора на завтра -->
     <label id="lblTomorrow">Sabah üçün plan:</label>
-    <textarea name="tomorrow_plan" placeholder="Sabah üçün prioritet tapşırıqlar..."></textarea>
+    <textarea name="tomorrow_plan" placeholder="План на завтра"></textarea>
 
     <button type="submit" class="save" id="btnSave">Saxla</button>
   </form>
@@ -150,78 +104,60 @@
 
 <script>
 const TEXT_AZ = {
-  title: "Direktor — gündəlik hesabat",
-  date: "Tarix:",
-  name: "Ad:",
-  reportAnalysis: "İşçi hesabatlarının analizi:",
-  crmWork: "CRM işi (görülən işlər üzrə şərh):",
-  tasksStatus: "Bitrix24 tapşırıqları — status:",
-  discipline: "İntizam nəzarəti (kim pozdu / kim təhvil vermədi):",
-  clientIssues: "Müştəri problemləri və həllər:",
-  financial: "Günün maliyyə nəzarəti (mədaxil / məxaric):",
-  decisions: "Qəbul edilmiş qərarlar (Decision Log):",
-  tomorrow: "Sabah üçün plan:",
-  save: "Saxla"
+  title:"Direktor — gündəlik hesabat",date:"Tarix:",name:"Ad:",
+  reportAnalysis:"İşçi hesabatlarının analizi:",
+  crmWork:"CRM işi:",tasksStatus:"Bitrix24 tapşırıqları:",
+  discipline:"İntizam nəzarəti:",clientIssues:"Müştəri problemləri:",
+  financial:"Maliyyə nəzarəti:",decisions:"Decision Log:",
+  tomorrow:"Sabah üçün plan:",save:"Saxla"
 };
-
 const TEXT_RU = {
-  title: "Директор — ежедневный отчёт",
-  date: "Дата:",
-  name: "Имя:",
-  reportAnalysis: "Анализ отчётов сотрудников:",
-  crmWork: "Работа в CRM (что сделано по сделкам):",
-  tasksStatus: "Работа с задачами Битрикс24 — статус:",
-  discipline: "Контроль дисциплины (кто нарушил / кто не сдал):",
-  clientIssues: "Клиентские проблемы за день и решения:",
-  financial: "Финансовый контроль дня (входящие / исходящие):",
-  decisions: "Принятые решения (Decision Log):",
-  tomorrow: "План директора на завтра:",
-  save: "Сохранить"
+  title:"Директор — ежедневный отчёт",date:"Дата:",name:"Имя:",
+  reportAnalysis:"Анализ отчётов сотрудников:",
+  crmWork:"Работа в CRM:",tasksStatus:"Задачи Bitrix24:",
+  discipline:"Контроль дисциплины:",clientIssues:"Клиентские проблемы:",
+  financial:"Финансовый контроль:",decisions:"Decision Log:",
+  tomorrow:"План на завтра:",save:"Сохранить"
 };
-
-function switchLang(lang) {
-  const t = lang === "AZ" ? TEXT_AZ : TEXT_RU;
-  document.getElementById("formTitle").textContent = t.title;
-  document.getElementById("lblDate").textContent = t.date;
-  document.getElementById("lblName").textContent = t.name;
-  document.getElementById("lblReportAnalysis").textContent = t.reportAnalysis;
-  document.getElementById("lblCRMWork").textContent = t.crmWork;
-  document.getElementById("lblTasksStatus").textContent = t.tasksStatus;
-  document.getElementById("lblDiscipline").textContent = t.discipline;
-  document.getElementById("lblClientIssues").textContent = t.clientIssues;
-  document.getElementById("lblFinancial").textContent = t.financial;
-  document.getElementById("lblDecisions").textContent = t.decisions;
-  document.getElementById("lblTomorrow").textContent = t.tomorrow;
-  document.getElementById("btnSave").textContent = t.save;
-
-  document.getElementById("lang").value = lang;
-  document.getElementById("btnAZ").classList.toggle("active", lang === "AZ");
-  document.getElementById("btnRU").classList.toggle("active", lang === "RU");
+function switchLang(lang){
+  const t = lang==="AZ"?TEXT_AZ:TEXT_RU;
+  formTitle.textContent=t.title; lblDate.textContent=t.date; lblName.textContent=t.name;
+  lblReportAnalysis.textContent=t.reportAnalysis; lblCRMWork.textContent=t.crmWork;
+  lblTasksStatus.textContent=t.tasksStatus; lblDiscipline.textContent=t.discipline;
+  lblClientIssues.textContent=t.clientIssues; lblFinancial.textContent=t.financial;
+  lblDecisions.textContent=t.decisions; lblTomorrow.textContent=t.tomorrow;
+  btnSave.textContent=t.save; langInp.value=lang;
+  btnAZ.classList.toggle("active",lang==="AZ"); btnRU.classList.toggle("active",lang==="RU");
 }
+const formTitle=document.getElementById("formTitle"), lblDate=document.getElementById("lblDate"),
+lblName=document.getElementById("lblName"), lblReportAnalysis=document.getElementById("lblReportAnalysis"),
+lblCRMWork=document.getElementById("lblCRMWork"), lblTasksStatus=document.getElementById("lblTasksStatus"),
+lblDiscipline=document.getElementById("lblDiscipline"), lblClientIssues=document.getElementById("lblClientIssues"),
+lblFinancial=document.getElementById("lblFinancial"), lblDecisions=document.getElementById("lblDecisions"),
+lblTomorrow=document.getElementById("lblTomorrow"), btnSave=document.getElementById("btnSave"),
+btnAZ=document.getElementById("btnAZ"), btnRU=document.getElementById("btnRU"),
+langInp=document.getElementById("lang");
 
-document.getElementById("btnAZ").onclick = () => switchLang("AZ");
-document.getElementById("btnRU").onclick = () => switchLang("RU");
+btnAZ.onclick=()=>switchLang("AZ");
+btnRU.onclick=()=>switchLang("RU");
 
-// Submit
-document.getElementById("directorForm").addEventListener("submit", async function(e) {
+// ✅ Отправка в ТВОЙ новый Web App
+document.getElementById("directorForm").addEventListener("submit", async function(e){
   e.preventDefault();
-  const status = document.getElementById("status");
-  const formData = new FormData(this);
-  const data = Object.fromEntries(formData.entries());
-
-  try {
-    await fetch("https://script.google.com/macros/s/AKfycbwZIP6pGEzSFJBe_yNmQOkFlPQu7f9ycRjguVC9WY-O1YwU0oPAV4NR_B7zBEUqW1W9/exec", {
-      method: "POST",
-      mode: "no-cors",
-      body: JSON.stringify(data)
+  const status=document.getElementById("status");
+  const data=Object.fromEntries(new FormData(this).entries());
+  try{
+    await fetch("https://script.google.com/macros/s/AKfycbwJtKQaJ-QnbeH0SpK4Bh6c_ZN-qOUD5Jt1ShRKKhD-UYmLFJJumW10Ilpqjm4lmBSF/exec",{
+      method:"POST",
+      mode:"no-cors",
+      body:JSON.stringify(data)
     });
-
-    status.textContent = "✔ Yadda saxlanıldı / Сохранено";
-    status.className = "success";
+    status.textContent="✔ Yadda saxlanıldı / Сохранено";
+    status.className="success";
     this.reset();
-  } catch (err) {
-    status.textContent = "❌ Xəta / Ошибка";
-    status.className = "error";
+  }catch(err){
+    status.textContent="❌ Xəta / Ошибка";
+    status.className="error";
   }
 });
 </script>
