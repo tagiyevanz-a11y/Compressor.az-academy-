@@ -2,53 +2,83 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>Ежедневный отчёт — Отдел продаж</title>
+<title>Ежедневный отчёт — Sales (AZ/RU)</title>
 
 <style>
-.kpi-container {
-  max-width: 520px;
-  margin: 0 auto;
-  padding: 20px;
-  border-radius: 12px;
-  background: #f4f7fb;
+body {
+  background: #F4F7FB;
   font-family: Arial, sans-serif;
-  border: 1px solid #dde4f0;
+  margin: 0;
+  padding: 0;
 }
+
+.kpi-container {
+  max-width: 580px;
+  margin: 30px auto;
+  padding: 25px;
+  border-radius: 16px;
+  background: #FFFFFF;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  border-left: 6px solid #0057B7;
+}
+
+.lang-switcher {
+  text-align: right;
+  margin-bottom: 10px;
+}
+
+.lang-switcher button {
+  background: #0057B7;
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  margin-left: 5px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+}
+.lang-switcher button.active {
+  background: #003F8A;
+}
+
 .kpi-container h2 {
-  font-size: 20px;
+  font-size: 22px;
   margin-bottom: 15px;
-  color: #12345b;
+  color: #12345B;
 }
-.kpi-container label {
-  font-size: 14px;
+
+label {
   font-weight: 600;
-  margin-top: 8px;
+  font-size: 14px;
+  margin-top: 10px;
   display: block;
 }
-.kpi-container input,
-.kpi-container textarea {
+
+input, textarea {
   width: 100%;
   padding: 8px 10px;
-  margin: 4px 0 10px;
-  border-radius: 6px;
-  border: 1px solid #cdd4e0;
+  margin-top: 4px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  border: 1px solid #C9D4E0;
   box-sizing: border-box;
 }
-.kpi-container button {
-  margin-top: 10px;
-  background: #0057b7;
-  color: #fff;
-  padding: 10px;
-  border: none;
+
+button.save-btn {
   width: 100%;
+  padding: 12px;
+  background: #0057B7;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
   border-radius: 8px;
+  border: none;
   cursor: pointer;
-  font-size: 15px;
-  font-weight: 600;
 }
-.kpi-container button:hover {
-  opacity: 0.9;
+button.save-btn:hover {
+  background: #004B9F;
 }
+
 .success {
   color: green;
   font-weight: bold;
@@ -63,71 +93,139 @@
 <body>
 
 <div class="kpi-container">
-  <h2>Ежедневный отчёт + KPI — ОТДЕЛ ПРОДАЖ (Compressor.az)</h2>
+  
+  <div class="lang-switcher">
+    <button id="btnAZ" class="active">AZ</button>
+    <button id="btnRU">RU</button>
+  </div>
 
-  <form id="salesReportForm">
-    <label>Дата:</label>
-    <input type="date" name="date" required>
+  <h2 id="title">Satış şöbəsi — gündəlik hesabat</h2>
 
-    <label>Сотрудник:</label>
-    <input type="text" name="employee" placeholder="ФИО" required>
+  <form id="salesForm">
 
     <input type="hidden" name="department" value="Sales">
+    <input type="hidden" name="language" id="language" value="AZ">
 
-    <label>Звонки (шт):</label>
+    <label id="lblDate">Tarix:</label>
+    <input type="date" name="date" required>
+
+    <label id="lblEmployee">Əməkdaş:</label>
+    <input type="text" name="employee" placeholder="Ad Soyad" required>
+
+    <label id="lblCalls">Zənglər (ədəd):</label>
     <input type="number" name="calls" min="0" value="0">
 
-    <label>Встречи (шт):</label>
+    <label id="lblMeetings">Görüşlər (ədəd):</label>
     <input type="number" name="meetings" min="0" value="0">
 
-    <label>Отправленные КП (шт):</label>
+    <label id="lblOffers">Göndərilən təkliflər:</label>
     <input type="number" name="offers" min="0" value="0">
 
-    <label>Закрытые сделки (шт):</label>
+    <label id="lblDeals">Bağlanan müqavilələr:</label>
     <input type="number" name="deals" min="0" value="0">
 
-    <label>Новые клиенты (шт):</label>
+    <label id="lblNewClients">Yeni müştərilər:</label>
     <input type="number" name="new_clients" min="0" value="0">
 
     <hr>
 
-    <label>Выручка всего (AZN):</label>
+    <label id="lblTotalRevenue">Ümumi gəlir (AZN):</label>
     <input type="number" name="revenue_total" min="0" value="0">
 
-    <label>Выручка от оборудования (AZN):</label>
+    <label id="lblEqRevenue">Avadanlıqdan gəlir (AZN):</label>
     <input type="number" name="revenue_equipment" min="0" value="0">
 
-    <label>Выручка от ЗИП (AZN):</label>
+    <label id="lblZipRevenue">Ehtiyat hissələri gəliri (AZN):</label>
     <input type="number" name="revenue_zip" min="0" value="0">
 
-    <label>Выручка от сервиса (AZN):</label>
+    <label id="lblServiceRevenue">Servis gəliri (AZN):</label>
     <input type="number" name="revenue_service" min="0" value="0">
 
-    <label>Комментарий:</label>
-    <textarea name="comment" rows="3" placeholder="Кратко по дню: важные клиенты, сделки, договорённости"></textarea>
+    <label id="lblComment">Şərh:</label>
+    <textarea name="comment" rows="3"></textarea>
 
-    <button type="submit">Сохранить отчёт</button>
+    <button type="submit" class="save-btn" id="btnSave">Saxla</button>
   </form>
 
-  <p id="salesStatus" style="margin-top:10px;"></p>
+  <p id="status"></p>
 </div>
 
 <script>
-document.getElementById('salesReportForm').addEventListener('submit', async function(e) {
+
+// Двуязычные тексты
+const RU = {
+  title: "Ежедневный отчёт — отдел продаж",
+  date: "Дата:",
+  employee: "Сотрудник:",
+  calls: "Звонки (шт):",
+  meetings: "Встречи (шт):",
+  offers: "Отправленные КП:",
+  deals: "Закрытые сделки:",
+  new_clients: "Новые клиенты:",
+  total_rev: "Выручка всего (AZN):",
+  eq_rev: "Выручка от оборудования (AZN):",
+  zip_rev: "Выручка от ЗИП (AZN):",
+  serv_rev: "Выручка от сервиса (AZN):",
+  comment: "Комментарий:",
+  save: "Сохранить"
+};
+
+const AZ = {
+  title: "Satış şöbəsi — gündəlik hesabat",
+  date: "Tarix:",
+  employee: "Əməkdaş:",
+  calls: "Zənglər (ədəd):",
+  meetings: "Görüşlər (ədəd):",
+  offers: "Göndərilən təkliflər:",
+  deals: "Bağlanan müqavilələr:",
+  new_clients: "Yeni müştərilər:",
+  total_rev: "Ümumi gəlir (AZN):",
+  eq_rev: "Avadanlıqdan gəlir (AZN):",
+  zip_rev: "Ehtiyat hissələri gəliri (AZN):",
+  serv_rev: "Servis gəliri (AZN):",
+  comment: "Şərh:",
+  save: "Saxla"
+};
+
+// функция смены языка
+function switchLang(lang) {
+  const set = lang === "AZ" ? AZ : RU;
+
+  document.getElementById("language").value = lang;
+
+  document.getElementById("title").innerText = set.title;
+  document.getElementById("lblDate").innerText = set.date;
+  document.getElementById("lblEmployee").innerText = set.employee;
+  document.getElementById("lblCalls").innerText = set.calls;
+  document.getElementById("lblMeetings").innerText = set.meetings;
+  document.getElementById("lblOffers").innerText = set.offers;
+  document.getElementById("lblDeals").innerText = set.deals;
+  document.getElementById("lblNewClients").innerText = set.new_clients;
+  document.getElementById("lblTotalRevenue").innerText = set.total_rev;
+  document.getElementById("lblEqRevenue").innerText = set.eq_rev;
+  document.getElementById("lblZipRevenue").innerText = set.zip_rev;
+  document.getElementById("lblServiceRevenue").innerText = set.serv_rev;
+  document.getElementById("lblComment").innerText = set.comment;
+  document.getElementById("btnSave").innerText = set.save;
+
+  document.getElementById("btnAZ").classList.toggle("active", lang === "AZ");
+  document.getElementById("btnRU").classList.toggle("active", lang === "RU");
+}
+
+document.getElementById("btnAZ").onclick = () => switchLang("AZ");
+document.getElementById("btnRU").onclick = () => switchLang("RU");
+
+// отправка в Google Sheets
+document.getElementById("salesForm").addEventListener("submit", async function(e) {
   e.preventDefault();
 
   const formData = new FormData(this);
   const data = Object.fromEntries(formData.entries());
 
-  // Числовые поля
   [
     "calls","meetings","offers","deals","new_clients",
     "revenue_total","revenue_equipment","revenue_zip","revenue_service"
-  ].forEach(key => {
-    data[key] = Number(data[key] || 0);
-  });
-
-  const statusEl = document.getElementById("salesStatus");
+  ].forEach(k => data[k] = Number(data[k] || 0));
 
   try {
     await fetch("https://script.google.com/macros/s/AKfycbxbZCdOuATN4kbiHMbgmHjWlfnWGyPf_Cb0zJFbSjNq-jMMqP_uyc4v1e7xa3PMeFqg9w/exec", {
@@ -136,15 +234,16 @@ document.getElementById('salesReportForm').addEventListener('submit', async func
       body: JSON.stringify(data)
     });
 
-    statusEl.innerHTML = "✔ Отчёт сохранён!";
-    statusEl.className = "success";
+    document.getElementById("status").innerHTML = "✔ Uğurla yadda saxlanıldı!";
+    document.getElementById("status").className = "success";
     this.reset();
 
   } catch (err) {
-    statusEl.innerHTML = "❌ Ошибка при сохранении!";
-    statusEl.className = "error";
+    document.getElementById("status").innerHTML = "❌ Xəta baş verdi!";
+    document.getElementById("status").className = "error";
   }
 });
+
 </script>
 
 </body>
