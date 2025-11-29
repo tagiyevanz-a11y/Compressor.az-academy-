@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html lang="ru" class="lang-ru">
+<head>
+  <meta charset="UTF-8">
+  <title>İllik strateji hesabat / Стратегический годовой отчёт</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont,"Segoe UI",sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f4f6fb;
+      color: #222;
+    }
+    .page {
+      max-width: 1200px;
+      margin: 20px auto 40px;
+      padding: 20px;
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+      position: relative;
+    }
+    h1 {
+      font-size: 24px;
+      text-align: center;
+      margin-bottom: 6px;
+    }
+    .sub {
+      text-align: center;
+      color: #666;
+      font-size: 13px;
+      margin-bottom: 18px;
+    }
+    .lang-switcher {
+      position: absolute;
+      top: 14px;
+      right: 18px;
+      display: inline-flex;
+      gap: 4px;
+      padding: 2px;
+      border-radius: 999px;
+      background: #edf1ff;
+      border: 1px solid #c8d2ff;
+    }
+    .lang-btn {
+      border: none;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      cursor: pointer;
+      background: transparent;
+      color: #445;
+    }
+    .lang-btn.active {
+      background: #316cff;
+      color: #fff;
+      box-shadow: 0 0 10px rgba(49,108,255,0.6);
+    }
+
+    .top-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex: 1 1 220px;
+    }
+    label {
+      font-size: 13px;
+      color: #333;
+    }
+    input[type="text"],
+    input[type="number"],
+    textarea,
+    select {
+      padding: 7px 9px;
+      border-radius: 8px;
+      border: 1px solid #ccd5f0;
+      font-size: 13px;
+      box-sizing: border-box;
+      background: #fff;
+    }
+    textarea {
+      min-height: 70px;
+      resize: vertical;
+    }
+    input:focus, textarea:focus, select:focus {
+      outline: none;
+      border-color: #316cff;
+      box-shadow: 0 0 0 2px rgba(49,108,255,0.15);
+    }
+
+    .role-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 10px;
+      margin: 16px 0 18px;
+    }
+    .role-card {
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid #d0d7ed;
+      background: #f7f8ff;
+      cursor: pointer;
+      font-size: 13px;
+      text-align: center;
+      transition: all 0.15s ease;
+    }
+    .role-card span {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 2px;
+    }
+    .role-card small {
+      font-size: 11px;
+      color: #777;
+    }
+    .role-card.active {
+      background: #316cff;
+      color: #fff;
+      border-color: #316cff;
+      box-shadow: 0 6px 16px rgba(49,108,255,0.4);
+    }
+    .role-card.active small {
+      color: #e5ebff;
+    }
+
+    .form-section {
+      display: none;
+      padding: 16px 18px;
+      border-radius: 14px;
+      border: 1px solid #d0d7ed;
+      background: #f9fbff;
+      margin-bottom: 16px;
+    }
+    .form-section.active {
+      display: block;
+    }
+    .block-title {
+      font-size: 15px;
+      font-weight: 600;
+      margin: 14px 0 6px;
+    }
+    .block-sub {
+      font-size: 11px;
+      color: #666;
+      margin-bottom: 6px;
+    }
+    .field-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 10px 14px;
+      margin-bottom: 8px;
+    }
+
+    .footer-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 10px;
+    }
+    .left-meta {
+      font-size: 11px;
+      color: #777;
+    }
+    .btn-primary {
+      padding: 9px 18px;
+      border-radius: 999px;
+      border: none;
+      font-size: 13px;
+      font-weight: 600;
+      background: #316cff;
+      color: #fff;
+      cursor: pointer;
+      box-shadow: 0 8px 18px rgba(49,108,255,0.45);
+    }
+    .btn-primary:disabled {
+      opacity: 0.6;
+      box-shadow: none;
+      cursor: default;
+    }
+    .status {
+      margin-top: 10px;
+      font-size: 12px;
+      min-height: 16px;
+    }
+    .status.ok { color: #138000; }
+    .status.err { color: #b00020; }
+
+    .t-ru { display: inline; }
+    .t-az { display: none; }
+    .lang-az .t-ru { display: none; }
+    .lang-az .t-az { display: inline; }
+
+    @media (max-width: 700px) {
+      .page { margin: 10px; padding: 14px; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Переключатель языка -->
+  <div class="lang-switcher">
+    <button type="button" class="lang-btn active" data-lang="ru">RU</button>
+    <button type="button" class="lang-btn" data-lang="az">AZ</button>
+  </div>
+
+  <h1>
+    <span class="t-ru">Стратегический годовой отчёт</span>
+    <span class="t-az">Strateji illik hesabat</span>
+  </h1>
+  <div class="sub">
+    <span class="t-ru">Подробный итог года для управления, стратегии и инвестиций.</span>
+    <span class="t-az">İdarəetmə, strategiya və investisiyalar üçün ilin ətraflı yekunu.</span>
+  </div>
+
+  <!-- Год, ФИО, отдел -->
+  <div class="top-row">
+    <div class="field">
+      <label>
+        <span class="t-ru">Год:</span>
+        <span class="t-az">İl:</span>
+      </label>
+      <input type="number" id="year" placeholder="2025">
+    </div>
+    <div class="field">
+      <label>Ad, soyad / ФИО:</label>
+      <input type="text" id="employeeName" placeholder="Elşan Ramazanov">
+    </div>
+    <div class="field">
+      <label>Şöbə / Отдел:</label>
+      <input type="text" id="department" placeholder="Direktor / Satış / Servis / ...">
+    </div>
+  </div>
+
+  <!-- Выбор роли -->
+  <div class="role-grid">
+    <div class="role-card active" data-role="director">
+      <span>Direktor</span>
+      <small>
+        <span class="t-ru">Финансы, стратегия, развитие</span>
+        <span class="t-az">Maliyyə, strategiya, inkişaf</span>
+      </small>
+    </div>
+    <div class="role-card" data-role="sales">
+      <span>Satış / Продажи</span>
+      <small>Plan, fakt, konversiya</small>
+    </div>
+    <div class="role-card" data-role="service">
+      <span>Servis</span>
+      <small>Keyfiyyət və gəlir / Качество и доход</small>
+    </div>
+    <div class="role-card" data-role="office">
+      <span>Ofis meneceri</span>
+      <small>Qəbul, qeydiyyat / Приём, регистрация</small>
+    </div>
+    <div class="role-card" data-role="smm">
+      <span>SMM</span>
+      <small>İzləyicilər, kontent / Подписчики, контент</small>
+    </div>
+    <div class="role-card" data-role="marketing">
+      <span>Marketinq</span>
+      <small>Lidlər, kampaniyalar / Лиды, кампании</small>
+    </div>
+    <div class="role-card" data-role="accountant">
+      <span>Mühasib / Бухгалтер</span>
+      <small>Maliyyə və vergi / Финансы и налоги</small>
+    </div>
+  </div>
+
+  <!-- ДИРЕКТОР -->
+  <div class="form-section active" id="form-director">
+    <!-- Финансы -->
+    <div class="block-title">
+      <span class="t-ru">1. Финансовый блок</span>
+      <span class="t-az">1. Maliyyə bloku</span>
+    </div>
+    <div class="block-sub">
+      <span class="t-ru">Верхнеуровневые показатели по компании за год.</span>
+      <span class="t-az">İl üzrə şirkətin əsas maliyyə göstəriciləri.</span>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>Dövriyyə / Оборот (AZN):</label>
+        <input type="number" id="dir_turnover" min="0" step="0.01">
+      </div>
+      <div class="field">
+        <label>Servis gəliri / Сервисные доходы (AZN):</label>
+        <input type="number" id="dir_service_income" min="0" step="0.01">
+      </div>
+      <div class="field">
+        <label>EBITDA (%):</label>
+        <input type="number" id="dir_ebitda" step="0.1">
+      </div>
+      <div class="field">
+        <label>
+          <span class="t-ru">Чистая прибыль (AZN):</span>
+          <span class="t-az">Xalis mənfəət (AZN):</span>
+        </label>
+        <input type="number" id="dir_net_profit" min="0" step="0.01">
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>
+          <span class="t-ru">Дебиторская задолженность (всего, AZN):</span>
+          <span class="t-az">Debitor borcu (cəmi, AZN):</span>
+        </label>
+        <input type="number" id="dir_debt_total" min="0" step="0.01">
+      </div>
+      <div class="field">
+        <label>
+          <span class="t-ru">Просроченная дебиторка (AZN):</span>
+          <span class="t-az">Gecikmiş debitor borcu (AZN):</span>
+        </label>
+        <input type="number" id="dir_debt_overdue" min="0" step="0.01">
+      </div>
+    </div>
+
+    <!-- Продажи -->
+    <div class="block-title">
+      <span class="t-ru">2. Продажи</span>
+      <span class="t-az">2. Satış</span>
+    </div>
+    <div class="block-sub">
+      <span class="t-ru">Общий взгляд на продажи за год.</span>
+      <span class="t-az">İl üzrə satışların ümumi mənzərəsi.</span>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>Ümumi müqavilə sayı / Всего сделок:</label>
+        <input type="number" id="dir_sales_deals" min="0">
+      </div>
+      <div class="field">
+        <label>Orta çek / Средний чек (AZN):</label>
+        <input type="number" id="dir_sales_avg_check" min="0" step="0.01">
+      </div>
+      <div class="field">
+        <label>Konversiya (%) / Конверсия (%):</label>
+        <input type="number" id="dir_sales_conversion" step="0.1">
+      </div>
+      <div class="field">
+        <label>
+          <span class="t-ru">Средний цикл сделки (дней):</span>
+          <span class="t-az">Orta satış dövrü (gün):</span>
+        </label>
+        <input type="number" id="dir_sales_cycle_days" step="0.1">
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>
+          <span class="t-ru">Доля потерянных сделок (%):</span>
+          <span class="t-az">İtirilmiş müqavilələrin payı (%):</span>
+        </label>
+        <input type="number" id="dir_sales_lost_percent" step="0.1">
+      </div>
+    </div>
+    <div class="field">
+      <label>
+        <span class="t-ru">ТОП-клиенты и ключевые сделки:</span>
+        <span class="t-az">TOP müştərilər və əsas müqavilələr:</span>
+      </label>
+      <textarea id="dir_sales_top_clients"></textarea>
+    </div>
+
+    <!-- Сервис -->
+    <div class="block-title">
+      <span class="t-ru">3. Сервис</span>
+      <span class="t-az">3. Servis</span>
+    </div>
+    <div class="block-sub">
+      <span class="t-ru">Качество послепродажного обслуживания.</span>
+      <span class="t-az">Satışsonrası servis xidmətinin keyfiyyəti.</span>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>
+          <span class="t-ru">Сервисные заявки (шт):</span>
+          <span class="t-az">Servis müraciətləri (ədəd):</span>
+        </label>
+        <input type="number" id="dir_service_requests" min="0">
+      </div>
+      <div class="field">
+        <label>
+          <span class="t-ru">Совершённые выезды (шт):</span>
+          <span class="t-az">Başa çatmış səfərlər (ədəd):</span>
+        </label>
+        <input type="number" id="dir_service_visits" min="0">
+      </div>
+      <div class="field">
+        <label>
+          <span class="t-ru">Простой оборудования (часы):</span>
+          <span class="t-az">Avadanlıq prostoyu (saat):</span>
+        </label>
+        <input type="number" id="dir_service_downtime" step="0.1">
+      </div>
+      <div class="field">
+        <label>
+          <span class="t-ru">Повторные обращения (шт):</span>
+          <span class="t-az">Təkrar müraciətlər (ədəd):</span>
+        </label>
+        <input type="number" id="dir_service_repeats" min="0">
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>Servis gəliri / Доход сервиса (AZN):</label>
+        <input type="number" id="dir_service_revenue" min="0" step="0.01">
+      </div>
+    </div>
+    <div class="field">
+      <label>
+        <span class="t-ru">Основные технические проблемы:</span>
+        <span class="t-az">Əsas texniki problemlər:</span>
+      </label>
+      <textarea id="dir_service_problems"></textarea>
+    </div>
+
+    <!-- Маркетинг -->
+    <div class="block-title">
+      <span class="t-ru">4. Маркетинг и лидогенерация</span>
+      <span class="t-az">4. Marketinq və lead-lər</span>
+    </div>
+    <div class="block-sub">
+      <span class="t-ru">Картина по лидам, каналам и окупаемости рекламы.</span>
+      <span class="t-az">Lead-lər, kanallar və reklamın səmərəliliyi.</span>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>
+          <span class="t-ru">Расходы на маркетинг (AZN):</span>
+          <span class="t-az">Marketinq xərcləri (AZN):</span>
+        </label>
+        <input type="number" id="dir_mkt_spend" min="0" step="0.01">
+      </div>
+      <div class="field">
+        <label>
+          <span class="t-ru">Всего лидов за год:</span>
+          <span class="t-az">İl üzrə ümumi lead sayı:</span>
+        </label>
+        <input type="number" id="dir_mkt_leads" min="0">
+      </div>
+      <div class="field">
+        <label>CPL (AZN):</label>
+        <input type="number" id="dir_mkt_cpl" min="0" step="0.01">
+      </div>
+      <div class="field">
+        <label>CAC (AZN):</label>
+        <input type="number" id="dir_mkt_cac" min="0" step="0.01">
+      </div>
+      <div class="field">
+        <label>ROI (%):</label>
+        <input type="number" id="dir_mkt_roi" step="0.1">
+      </div>
+    </div>
+    <div class="field">
+      <label>
+        <span class="t-ru">Основные каналы и их эффективность:</span>
+        <span class="t-az">Əsas kanallar və onların effektivliyi:</span>
+      </label>
+      <textarea id="dir_mkt_channels"></textarea>
+    </div>
+
+    <!-- Персонал -->
+    <div class="block-title">
+      <span class="t-ru">5. Персонал и команда</span>
+      <span class="t-az">5. Komanda və heyət</span>
+    </div>
+    <div class="block-sub">
+      <span class="t-ru">Состав команды, текучка и уровень компетенций.</span>
+      <span class="t-az">Komandanın tərkibi, dövriyyə və kompetensiya səviyyəsi.</span>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>
+          <span class="t-ru">Количество сотрудников на начало года:</span>
+          <span class="t-az">İlin əvvəlində əməkdaş sayı:</span>
+        </label>
+        <input type="number" id="dir_hr_headcount_start" min="0">
+      </div>
+      <div class="field">
+        <label>
+          <span class="t-ru">Количество сотрудников на конец года:</span>
+          <span class="t-az">İlin sonunda əməkdaş sayı:</span>
+        </label>
+        <input type="number" id="dir_hr_headcount_end" min="0">
+      </div>
+      <div class="field">
+        <label>
+          <span class="t-ru">Нанято за год:</span>
+          <span class="t-az">İl ərzində işə götürülənlər:</span>
+        </label>
+        <input type="number" id="dir_hr_hires" min="0">
+      </div>
+      <div class="field">
+        <label>
+          <span class="t-ru">Уволено за год:</span>
+          <span class="t-az">İl ərzində işdən çıxanlar:</span>
+        </label>
+        <input type="number" id="dir_hr_fires" min="0">
+      </div>
+      <div class="field">
+        <label>
+          <span class="t-ru">Текучка (%)</span>
+          <span class="t-az">Kadr dövriyyəsi (%)</span>
+        </label>
+        <input type="number" id="dir_hr_turnover" step="0.1">
+      </div>
+      <div class="field">
+        <label>
+          <span class="t-ru">Средний уровень компетенций (1–10):</span>
+          <span class="t-az">Orta kompetensiya səviyyəsi (1–10):</span>
+        </label>
+        <input type="number" id="dir_hr_competence" min="1" max="10" step="0.1">
+      </div>
+    </div>
+    <div class="field">
+      <label>
+        <span class="t-ru">Ключевые проблемы с персоналом:</span>
+        <span class="t-az">Heyətlə bağlı əsas problemlər:</span>
+      </label>
+      <textarea id="dir_hr_problems"></textarea>
+    </div>
+
+    <!-- Бизнес-процессы -->
+    <div class="block-title">
+      <span class="t-ru">6. Бизнес-процессы и системы</span>
+      <span class="t-az">6. Biznes proseslər və sistemlər</span>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>
+          <span class="t-ru">Внедрённые улучшения (описание):</span>
+          <span class="t-az">İl ərzində aparılan yaxşılaşdırmalar:</span>
+        </label>
+        <textarea id="dir_proc_improvements"></textarea>
+      </div>
+      <div class="field">
+        <label>
+          <span class="t-ru">Основные узкие места:</span>
+          <span class="t-az">Əsas tıxanmalar və dar yerlər:</span>
+        </label>
+        <textarea id="dir_proc_bottlenecks"></textarea>
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>
+          <span class="t-ru">Выполнение планов по улучшениям (%):</span>
+          <span class="t-az">Yaxşılaşdırma planlarının icrası (%):</span>
+        </label>
+        <input type="number" id="dir_proc_impl_rate" step="0.1">
+      </div>
+    </div>
+
+    <!-- Стратегия -->
+    <div class="block-title">
+      <span class="t-ru">7. Стратегия и планы</span>
+      <span class="t-az">7. Strategiya və planlar</span>
+    </div>
+    <div class="block-sub">
+      <span class="t-ru">Что масштабируем, что закрываем, во что инвестируем.</span>
+      <span class="t-az">Nəyi böyüdürük, nəyi bağlayırıq, nəyə investisiya edirik.</span>
+    </div>
+    <div class="field">
+      <label>
+        <span class="t-ru">Что масштабировать в следующем году:</span>
+        <span class="t-az">Növbəti ildə nəyi böyütmək:</span>
+      </label>
+      <textarea id="dir_str_scale_up"></textarea>
+    </div>
+    <div class="field">
+      <label>
+        <span class="t-ru">Что остановить или сократить:</span>
+        <span class="t-az">Nəyi dayandırmaq və ya azaltmaq:</span>
+      </label>
+      <textarea id="dir_str_stop"></textarea>
+    </div>
+    <div class="field">
+      <label>
+        <span class="t-ru">Новые направления и проекты:</span>
+        <span class="t-az">Yeni istiqamətlər və layihələr:</span>
+      </label>
+      <textarea id="dir_str_new_projects"></textarea>
+    </div>
+    <div class="field">
+      <label>
+        <span class="t-ru">Инвестиционные планы:</span>
+        <span class="t-az">İnvestisiya planları:</span>
+      </label>
+      <textarea id="dir_str_investments"></textarea>
+    </div>
+    <div class="field">
+      <label>
+        <span class="t-ru">Ключевые риски и как ими управлять:</span>
+        <span class="t-az">Əsas risklər və onların idarə olunması:</span>
+      </label>
+      <textarea id="dir_str_risks"></textarea>
+    </div>
+  </div>
+
+  <!-- ПРОДАЖИ -->
+  <div class="form-section" id="form-sales">
+    <div class="block-title">Satış / Продажи</div>
+    <div class="block-sub">
+      <span class="t-ru">Ваш личный годовой результат по продажам.</span>
+      <span class="t-az">Satışlar üzrə şəxsi illik nəticəniz.</span>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>İllik plan (AZN) / Годовой план (AZN):</label>
+        <input type="number" id="sales_plan" min="0" step="0.01">
+      </div>
+      <div class="field">
+        <label>Fakt (AZN) / Факт (AZN):</label>
+        <input type="number" id="sales_fact" min="0" step="0.01">
+      </div>
+      <div class="field">
+        <label>
+          <span class="t-ru">Выполнение плана (%):</span>
+          <span class="t-az">Plan icrası (%):</span>
+        </label>
+        <input type="number" id="sales_plan_percent" step="0.1">
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>Müqavilələr / Сделки (ədəd):</label>
+        <input type="number" id="sales_deals" min="0">
+      </div>
+      <div class="field">
+        <label>Orta çek / Средний чек (AZN):</label>
+        <input type="number" id="sales_avg_check" min="0" step="0.01">
+      </div>
+      <div class="field">
+        <label>Konversiya (%) / Конверсия (%):</label>
+        <input type="number" id="sales_conversion" step="0.1">
+      </div>
+    </div>
+    <div class="field">
+      <label>
+        <span class="t-ru">Основные клиенты и проекты:</span>
+        <span class="t-az">Əsas müştərilər və layihələr:</span>
+      </label>
+      <textarea id="sales_top_clients"></textarea>
+    </div>
+    <div class="field">
+      <label>
+        <span class="t-ru">Главные сложности и потери:</span>
+        <span class="t-az">Əsas çətinliklər və itkilər:</span>
+      </label>
+      <textarea id="sales_problems"></textarea>
+    </div>
+    <div class="field">
+      <label>
+        <span class="t-ru">План развития на следующий год:</span>
+        <span class="t-az">Növbəti il üçün inkişaf planı:</span>
+      </label>
+      <textarea id="sales_next_year_plan"></textarea>
+    </div>
+  </div>
+
+  <!-- СЕРВИС -->
+  <div class="form-section" id="form-service">
+    <div class="block-title">Servis</div>
+    <div class="block-sub">
+      <span class="t-ru">Годовое качество сервиса и загрузка.</span>
+      <span class="t-az">Servis keyfiyyəti və yüklənmə.</span>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>Servis müraciətləri / Заявки (ədəd):</label>
+        <input type="number" id="service_requests" min="0">
+      </div>
+      <div class="field">
+        <label>Səfərlər / Выезды (ədəd):</label>
+        <input type="number" id="service_visits" min="0">
+      </div>
+      <div class="field">
+        <label>Servis gəliri / Доход сервиса (AZN):</label>
+        <input type="number" id="service_revenue" min="0" step="0.01">
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>
+          <span class="t-ru">Простой оборудования (часы):</span>
+          <span class="t-az">Avadanlıq prostoyu (saat):</span>
+        </label>
+        <input type="number" id="service_downtime" step="0.1">
+      </div>
+      <div class="field">
+        <label>Təkrar müraciətlər / Повторные обращения:</label>
+        <input type="number" id="service_repeats" min="0">
+      </div>
+    </div>
+    <div class="field">
+      <label>
+        <span class="t-ru">Технические проблемы и типовые неисправности:</span>
+        <span class="t-az">Texniki problemlər və tipik nasazlıqlar:</span>
+      </label>
+      <textarea id="service_problems"></textarea>
+    </div>
+    <div class="field">
+      <label>
+        <span class="t-ru">Предложения по улучшению сервиса:</span>
+        <span class="t-az">Servisin yaxşılaşdırılması üçün təkliflər:</span>
+      </label>
+      <textarea id="service_suggestions"></textarea>
+    </div>
+  </div>
+
+  <!-- ОФИС -->
+  <div class="form-section" id="form-office">
+    <div class="block-title">Ofis meneceri</div>
+    <div class="block-sub">
+      <span class="t-ru">Качество приёма и регистрации обращений.</span>
+      <span class="t-az">Müraciətlərin qəbulu və qeydiyyatının keyfiyyəti.</span>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>Zənglər / Звонки (cəmi):</label>
+        <input type="number" id="office_calls" min="0">
+      </div>
+      <div class="field">
+        <label>Müraciətlər / Заявки (qeydiyyata alınan):</label>
+        <input type="number" id="office_requests" min="0">
+      </div>
+      <div class="field">
+        <label>Yanlış qeydiyyatlar / Неверные регистрации:</label>
+        <input type="number" id="office_wrong" min="0">
+      </div>
+    </div>
+    <div class="field">
+      <label>
+        <span class="t-ru">Основные ошибки и причины:</span>
+        <span class="t-az">Əsas səhvlər və səbəblər:</span>
+      </label>
+      <textarea id="office_errors"></textarea>
+    </div>
+    <div class="field">
+      <label>
+        <span class="t-ru">Идеи по улучшению сервиса и регистрации:</span>
+        <span class="t-az">Qəbul və qeydiyyatın yaxşılaşdırılması üçün ideyalar:</span>
+      </label>
+      <textarea id="office_suggestions"></textarea>
+    </div>
+  </div>
+
+  <!-- SMM -->
+  <div class="form-section" id="form-smm">
+    <div class="block-title">SMM</div>
+    <div class="block-sub">
+      <span class="t-ru">Годовой результат по соцсетям.</span>
+      <span class="t-az">İl üzrə sosial şəbəkələrdə nəticələr.</span>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>Postlar / Посты (cəmi):</label>
+        <input type="number" id="smm_posts" min="0">
+      </div>
+      <div class="field">
+        <label>Story / Сторис (cəmi):</label>
+        <input type="number" id="smm_stories" min="0">
+      </div>
+      <div class="field">
+        <label>
+          <span class="t-ru">Рост подписчиков (чел.):</span>
+          <span class="t-az">İzləyici artımı (nəfər):</span>
+        </label>
+        <input type="number" id="smm_followers_growth" min="0">
+      </div>
+      <div class="field">
+        <label>
+          <span class="t-ru">Лиды из соцсетей (шт):</span>
+          <span class="t-az">Sosial şəbəkələrdən lead-lər:</span>
+        </label>
+        <input type="number" id="smm_leads" min="0">
+      </div>
+    </div>
+    <div class="field">
+      <label>
+        <span class="t-ru">Лучшие кампании и посты:</span>
+        <span class="t-az">Ən uğurlu kampaniyalar və postlar:</span>
+      </label>
+      <textarea id="smm_best"></textarea>
+    </div>
+    <div class="field">
+      <label>
+        <span class="t-ru">Ошибки и уроки за год:</span>
+        <span class="t-az">İl ərzində edilən səhvlər və dərslər:</span>
+      </label>
+      <textarea id="smm_lessons"></textarea>
+    </div>
+  </div>
+
+  <!-- МАРКЕТИНГ -->
+  <div class="form-section" id="form-marketing">
+    <div class="block-title">Marketinq</div>
+    <div class="block-sub">
+      <span class="t-ru">Лиды, каналы, бюджеты.</span>
+      <span class="t-az">Lead-lər, kanallar, büdcə.</span>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>Marketinq büdcəsi / Бюджет (AZN):</label>
+        <input type="number" id="mkt_budget" min="0" step="0.01">
+      </div>
+      <div class="field">
+        <label>Lead-lər / Лиды (cəmi):</label>
+        <input type="number" id="mkt_leads" min="0">
+      </div>
+      <div class="field">
+        <label>CPL (AZN):</label>
+        <input type="number" id="mkt_cpl" min="0" step="0.01">
+      </div>
+    </div>
+    <div class="field">
+      <label>
+        <span class="t-ru">Каналы и их эффективность:</span>
+        <span class="t-az">Kanallar və onların effektivliyi:</span>
+      </label>
+      <textarea id="mkt_channels"></textarea>
+    </div>
+    <div class="field">
+      <label>
+        <span class="t-ru">Главные выводы и рекомендации:</span>
+        <span class="t-az">Əsas nəticələr və tövsiyələr:</span>
+      </label>
+      <textarea id="mkt_insights"></textarea>
+    </div>
+  </div>
+
+  <!-- БУХГАЛТЕР -->
+  <div class="form-section" id="form-accountant">
+    <div class="block-title">Mühasib / Бухгалтер</div>
+    <div class="block-sub">
+      <span class="t-ru">Финансовый итог, налоги и риски.</span>
+      <span class="t-az">Maliyyə yekunu, vergilər və risklər.</span>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>Dövriyyə / Оборот (AZN):</label>
+        <input type="number" id="acc_turnover" min="0" step="0.01">
+      </div>
+      <div class="field">
+        <label>Mənfəət / Прибыль (AZN):</label>
+        <input type="number" id="acc_profit" min="0" step="0.01">
+      </div>
+      <div class="field">
+        <label>Debitor borcu / Дебиторка (AZN):</label>
+        <input type="number" id="acc_debt" min="0" step="0.01">
+      </div>
+    </div>
+    <div class="field">
+      <label>
+        <span class="t-ru">Налоги и отчётность (ключевые моменты):</span>
+        <span class="t-az">Vergilər və hesabatlılıq (əsas məqamlar):</span>
+      </label>
+      <textarea id="acc_taxes"></textarea>
+    </div>
+    <div class="field">
+      <label>
+        <span class="t-ru">Финансовые риски и предложения:</span>
+        <span class="t-az">Maliyyə riskləri və təkliflər:</span>
+      </label>
+      <textarea id="acc_risks"></textarea>
+    </div>
+  </div>
+
+  <!-- Кнопка отправки -->
+  <div class="footer-row">
+    <div class="left-meta">
+      <span class="t-ru">Данные отправятся в Google Sheet в формате JSON.</span>
+      <span class="t-az">Məlumatlar JSON formatında Google Sheet-ə göndəriləcək.</span>
+    </div>
+    <button class="btn-primary" id="submitBtn">
+      <span class="t-ru">Отправить годовой отчёт</span>
+      <span class="t-az">İllik hesabatı göndər</span>
+    </button>
+  </div>
+
+  <div class="status" id="status"></div>
+
+</div>
+
+<script>
+  // 🔧 СЮДА ВСТАВЬ СВОЙ WebApp URL из Google Apps Script
+  const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyrb3vA5bb_5tzJXJTzihRbrS-6e415-MwEhro3jPMvpEMJC-BCxqP5E2ESTq8Rkp3g/exec";
+
+  const htmlRoot = document.documentElement;
+  const langBtns = document.querySelectorAll(".lang-btn");
+  langBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
+      langBtns.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      const lang = btn.getAttribute("data-lang");
+      htmlRoot.classList.toggle("lang-ru", lang === "ru");
+      htmlRoot.classList.toggle("lang-az", lang === "az");
+    });
+  });
+
+  // Переключение ролей
+  let currentRole = "director";
+  const roleCards = document.querySelectorAll(".role-card");
+  const sections = {
+    director: document.getElementById("form-director"),
+    sales: document.getElementById("form-sales"),
+    service: document.getElementById("form-service"),
+    office: document.getElementById("form-office"),
+    smm: document.getElementById("form-smm"),
+    marketing: document.getElementById("form-marketing"),
+    accountant: document.getElementById("form-accountant")
+  };
+
+  roleCards.forEach(card => {
+    card.addEventListener("click", () => {
+      const role = card.getAttribute("data-role");
+      currentRole = role;
+      roleCards.forEach(c => c.classList.remove("active"));
+      card.classList.add("active");
+      Object.keys(sections).forEach(key => {
+        sections[key].classList.toggle("active", key === role);
+      });
+    });
+  });
+
+  // Сбор данных по ролям
+  function getRoleData(role) {
+    const data = { role };
+
+    if (role === "director") {
+      data.financials = {
+        turnover: +document.getElementById("dir_turnover").value || 0,
+        service_income: +document.getElementById("dir_service_income").value || 0,
+        ebitda: +document.getElementById("dir_ebitda").value || 0,
+        net_profit: +document.getElementById("dir_net_profit").value || 0,
+        debt_total: +document.getElementById("dir_debt_total").value || 0,
+        debt_overdue: +document.getElementById("dir_debt_overdue").value || 0
+      };
+      data.sales = {
+        deals: +document.getElementById("dir_sales_deals").value || 0,
+        avg_check: +document.getElementById("dir_sales_avg_check").value || 0,
+        conversion: +document.getElementById("dir_sales_conversion").value || 0,
+        cycle_days: +document.getElementById("dir_sales_cycle_days").value || 0,
+        lost_percent: +document.getElementById("dir_sales_lost_percent").value || 0,
+        top_clients: document.getElementById("dir_sales_top_clients").value.trim()
+      };
+      data.service = {
+        requests: +document.getElementById("dir_service_requests").value || 0,
+        visits: +document.getElementById("dir_service_visits").value || 0,
+        downtime_hours: +document.getElementById("dir_service_downtime").value || 0,
+        repeats: +document.getElementById("dir_service_repeats").value || 0,
+        revenue: +document.getElementById("dir_service_revenue").value || 0,
+        problems: document.getElementById("dir_service_problems").value.trim()
+      };
+      data.marketing = {
+        spend: +document.getElementById("dir_mkt_spend").value || 0,
+        leads: +document.getElementById("dir_mkt_leads").value || 0,
+        cpl: +document.getElementById("dir_mkt_cpl").value || 0,
+        cac: +document.getElementById("dir_mkt_cac").value || 0,
+        roi: +document.getElementById("dir_mkt_roi").value || 0,
+        channels: document.getElementById("dir_mkt_channels").value.trim()
+      };
+      data.hr = {
+        headcount_start: +document.getElementById("dir_hr_headcount_start").value || 0,
+        headcount_end: +document.getElementById("dir_hr_headcount_end").value || 0,
+        hires: +document.getElementById("dir_hr_hires").value || 0,
+        fires: +document.getElementById("dir_hr_fires").value || 0,
+        turnover: +document.getElementById("dir_hr_turnover").value || 0,
+        competence: +document.getElementById("dir_hr_competence").value || 0,
+        problems: document.getElementById("dir_hr_problems").value.trim()
+      };
+      data.processes = {
+        improvements: document.getElementById("dir_proc_improvements").value.trim(),
+        bottlenecks: document.getElementById("dir_proc_bottlenecks").value.trim(),
+        implementation_rate: +document.getElementById("dir_proc_impl_rate").value || 0
+      };
+      data.strategy = {
+        scale_up: document.getElementById("dir_str_scale_up").value.trim(),
+        stop: document.getElementById("dir_str_stop").value.trim(),
+        new_projects: document.getElementById("dir_str_new_projects").value.trim(),
+        investments: document.getElementById("dir_str_investments").value.trim(),
+        risks: document.getElementById("dir_str_risks").value.trim()
+      };
+    }
+
+    if (role === "sales") {
+      data.plan = +document.getElementById("sales_plan").value || 0;
+      data.fact = +document.getElementById("sales_fact").value || 0;
+      data.plan_percent = +document.getElementById("sales_plan_percent").value || 0;
+      data.deals = +document.getElementById("sales_deals").value || 0;
+      data.avg_check = +document.getElementById("sales_avg_check").value || 0;
+      data.conversion = +document.getElementById("sales_conversion").value || 0;
+      data.top_clients = document.getElementById("sales_top_clients").value.trim();
+      data.problems = document.getElementById("sales_problems").value.trim();
+      data.next_year_plan = document.getElementById("sales_next_year_plan").value.trim();
+    }
+
+    if (role === "service") {
+      data.requests = +document.getElementById("service_requests").value || 0;
+      data.visits = +document.getElementById("service_visits").value || 0;
+      data.revenue = +document.getElementById("service_revenue").value || 0;
+      data.downtime = +document.getElementById("service_downtime").value || 0;
+      data.repeats = +document.getElementById("service_repeats").value || 0;
+      data.problems = document.getElementById("service_problems").value.trim();
+      data.suggestions = document.getElementById("service_suggestions").value.trim();
+    }
+
+    if (role === "office") {
+      data.calls = +document.getElementById("office_calls").value || 0;
+      data.requests = +document.getElementById("office_requests").value || 0;
+      data.wrong = +document.getElementById("office_wrong").value || 0;
+      data.errors = document.getElementById("office_errors").value.trim();
+      data.suggestions = document.getElementById("office_suggestions").value.trim();
+    }
+
+    if (role === "smm") {
+      data.posts = +document.getElementById("smm_posts").value || 0;
+      data.stories = +document.getElementById("smm_stories").value || 0;
+      data.followers_growth = +document.getElementById("smm_followers_growth").value || 0;
+      data.leads = +document.getElementById("smm_leads").value || 0;
+      data.best = document.getElementById("smm_best").value.trim();
+      data.lessons = document.getElementById("smm_lessons").value.trim();
+    }
+
+    if (role === "marketing") {
+      data.budget = +document.getElementById("mkt_budget").value || 0;
+      data.leads = +document.getElementById("mkt_leads").value || 0;
+      data.cpl = +document.getElementById("mkt_cpl").value || 0;
+      data.channels = document.getElementById("mkt_channels").value.trim();
+      data.insights = document.getElementById("mkt_insights").value.trim();
+    }
+
+    if (role === "accountant") {
+      data.turnover = +document.getElementById("acc_turnover").value || 0;
+      data.profit = +document.getElementById("acc_profit").value || 0;
+      data.debt = +document.getElementById("acc_debt").value || 0;
+      data.taxes = document.getElementById("acc_taxes").value.trim();
+      data.risks = document.getElementById("acc_risks").value.trim();
+    }
+
+    return data;
+  }
+
+  // Отправка
+  document.getElementById("submitBtn").addEventListener("click", function () {
+    const statusEl = document.getElementById("status");
+    statusEl.className = "status";
+    statusEl.textContent = "";
+
+    const year = document.getElementById("year").value;
+    const employee = document.getElementById("employeeName").value.trim();
+    const department = document.getElementById("department").value.trim();
+    const lang = htmlRoot.classList.contains("lang-az") ? "AZ" : "RU";
+
+    if (!year) {
+      statusEl.textContent = lang === "AZ" ? "İli qeyd edin." : "Укажите год.";
+      statusEl.classList.add("err");
+      return;
+    }
+    if (!employee || !department) {
+      statusEl.textContent = lang === "AZ"
+        ? "Ad, soyad və şöbə mütləqdir."
+        : "ФИО и отдел обязательны.";
+      statusEl.classList.add("err");
+      return;
+    }
+
+    const payload = {
+      periodType: "year",
+      year: year,
+      employee: employee,
+      department: department,
+      role: currentRole,
+      language: lang,
+      dataJSON: JSON.stringify(getRoleData(currentRole)),
+      isLate: false,
+      isSuspicious: false,
+      businessFlags: ""
+    };
+
+    const btn = this;
+    btn.disabled = true;
+
+    fetch(GOOGLE_SCRIPT_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    }).then(() => {
+      statusEl.textContent = lang === "AZ"
+        ? "İllik hesabat göndərildi."
+        : "Годовой отчёт отправлен.";
+      statusEl.classList.add("ok");
+      btn.disabled = false;
+    }).catch(err => {
+      console.error(err);
+      statusEl.textContent = lang === "AZ"
+        ? "Göndərmə zamanı xəta."
+        : "Ошибка при отправке.";
+      statusEl.classList.add("err");
+      btn.disabled = false;
+    });
+  });
+</script>
+</body>
+</html>

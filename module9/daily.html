@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="ru" class="lang-ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Günlük hesabat / Дневной отчёт</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f4f6fb;
+      color: #222;
+    }
+
+    .page {
+      max-width: 1100px;
+      margin: 20px auto 40px;
+      padding: 20px;
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+      position: relative;
+    }
+
+    h1 {
+      font-size: 24px;
+      margin-bottom: 6px;
+      text-align: center;
+    }
+
+    .sub {
+      text-align: center;
+      color: #666;
+      margin-bottom: 18px;
+      font-size: 13px;
+    }
+
+    .lang-switcher {
+      position: absolute;
+      top: 14px;
+      right: 18px;
+      display: inline-flex;
+      gap: 4px;
+      padding: 2px;
+      border-radius: 999px;
+      background: #edf1ff;
+      border: 1px solid #c8d2ff;
+    }
+
+    .lang-btn {
+      border: none;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      cursor: pointer;
+      background: transparent;
+      color: #445;
+    }
+
+    .lang-btn.active {
+      background: #316cff;
+      color: #fff;
+      box-shadow: 0 0 10px rgba(49,108,255,0.6);
+    }
+
+    .period-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 18px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .period-row label {
+      font-size: 13px;
+      color: #444;
+    }
+
+    .period-row input {
+      padding: 6px 10px;
+      border-radius: 8px;
+      border: 1px solid #d0d7ed;
+      font-size: 13px;
+    }
+
+    .role-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .role-card {
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid #d0d7ed;
+      background: #f7f8ff;
+      cursor: pointer;
+      font-size: 13px;
+      line-height: 1.3;
+      transition: all 0.15s ease;
+      text-align: center;
+    }
+
+    .role-card span.title {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 3px;
+    }
+
+    .role-card small {
+      display: block;
+      color: #777;
+      font-size: 11px;
+    }
+
+    .role-card.active {
+      background: #316cff;
+      color: #fff;
+      border-color: #316cff;
+      box-shadow: 0 6px 16px rgba(49,108,255,0.4);
+    }
+
+    .role-card.active small {
+      color: #e5ebff;
+    }
+
+    .form-section {
+      display: none;
+      border-radius: 14px;
+      border: 1px solid #d0d7ed;
+      padding: 16px 18px;
+      background: #f9fbff;
+      margin-bottom: 20px;
+    }
+
+    .form-section.active {
+      display: block;
+    }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .section-subtitle {
+      font-size: 12px;
+      color: #666;
+      margin-bottom: 10px;
+    }
+
+    .field-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 10px 14px;
+      margin-bottom: 10px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    label {
+      font-size: 13px;
+      color: #333;
+    }
+
+    input[type="number"],
+    input[type="text"],
+    textarea,
+    input[type="date"] {
+      padding: 7px 9px;
+      border: 1px solid #ccd5f0;
+      border-radius: 8px;
+      font-size: 13px;
+      resize: vertical;
+      min-height: 32px;
+      box-sizing: border-box;
+      background: #fff;
+    }
+
+    textarea {
+      min-height: 60px;
+    }
+
+    input:focus,
+    textarea:focus {
+      outline: none;
+      border-color: #316cff;
+      box-shadow: 0 0 0 2px rgba(49,108,255,0.15);
+    }
+
+    .top-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .top-row .field {
+      flex: 1 1 220px;
+    }
+
+    .footer-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 10px;
+    }
+
+    .left-meta {
+      font-size: 11px;
+      color: #777;
+    }
+
+    .btn-primary {
+      padding: 9px 18px;
+      border-radius: 999px;
+      border: none;
+      font-size: 13px;
+      font-weight: 600;
+      background: #316cff;
+      color: #fff;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 8px 18px rgba(49,108,255,0.45);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.6;
+      cursor: default;
+      box-shadow: none;
+    }
+
+    .status {
+      margin-top: 10px;
+      font-size: 12px;
+      min-height: 16px;
+    }
+
+    .status.ok { color: #138000; }
+    .status.err { color: #b00020; }
+
+    .hint {
+      font-size: 11px;
+      color: #888;
+      margin-top: 6px;
+    }
+
+    .t-ru { display: inline; }
+    .t-az { display: none; }
+    .lang-az .t-ru { display: none; }
+    .lang-az .t-az { display: inline; }
+
+    @media (max-width: 600px) {
+      .page {
+        margin: 10px;
+        padding: 14px;
+      }
+    }
+
+    /* ✅ Оверлей с галочкой */
+    .success-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+    .success-box {
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 28px 36px;
+      text-align: center;
+      box-shadow: 0 12px 40px rgba(0,0,0,.25);
+      animation: pop .25s ease;
+    }
+    .success-icon {
+      font-size: 64px;
+      color: #20c997;
+    }
+    .success-text {
+      margin-top: 8px;
+      font-size: 18px;
+      font-weight: 700;
+    }
+    @keyframes pop {
+      from { transform: scale(.7); opacity: 0; }
+      to   { transform: scale(1); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+  <!-- Переключатель языка -->
+  <div class="lang-switcher">
+    <button type="button" class="lang-btn active" data-lang="ru">RU</button>
+    <button type="button" class="lang-btn" data-lang="az">AZ</button>
+  </div>
+
+  <h1>
+    <span class="t-az">Günlük hesabat forması</span>
+    <span class="t-ru">Форма дневного отчёта</span>
+  </h1>
+  <div class="sub">
+    <span class="t-az">Bu gün üçün nəticələri qeyd edin.</span>
+    <span class="t-ru">Заполните результаты за сегодняшний день.</span>
+  </div>
+
+  <!-- Дата -->
+  <div class="period-row">
+    <label>
+      <span class="t-az">Tarix:</span>
+      <span class="t-ru">Дата:</span>
+      <input type="date" id="reportDate">
+    </label>
+  </div>
+
+  <!-- ФИО и отдел -->
+  <div class="top-row">
+    <div class="field">
+      <label><span class="t-az">Ad, soyad:</span><span class="t-ru">ФИО:</span></label>
+      <input type="text" id="employeeName" placeholder="Elşan Ramazanov">
+    </div>
+    <div class="field">
+      <label><span class="t-az">Şöbə:</span><span class="t-ru">Отдел:</span></label>
+      <input type="text" id="department" placeholder="Satış / Servis / Ofis / Marketinq / Mühasibat">
+    </div>
+  </div>
+
+  <!-- Выбор роли -->
+  <div class="role-grid" id="roleGrid">
+    <div class="role-card active" data-role="director">
+      <span class="title"><span class="t-az">Direktor</span><span class="t-ru">Директор</span></span>
+      <small><span class="t-az">İdarəetmə və nəzarət</span><span class="t-ru">Управление и контроль</span></small>
+    </div>
+    <div class="role-card" data-role="sales">
+      <span class="title"><span class="t-az">Korparativ satış meneceri</span><span class="t-ru">Менеджер по корпоративным продажам</span></span>
+      <small><span class="t-az">Zənglər, təkliflər, müqavilələr</span><span class="t-ru">Звонки, КП, сделки</span></small>
+    </div>
+    <div class="role-card" data-role="service">
+      <span class="title"><span class="t-az">Servis meneceri</span><span class="t-ru">Сервис-менеджер</span></span>
+      <small><span class="t-az">Sifarişlər və səfərlər</span><span class="t-ru">Заявки и выезды</span></small>
+    </div>
+    <div class="role-card" data-role="office">
+      <span class="title"><span class="t-az">Ofis meneceri</span><span class="t-ru">Офис-менеджер</span></span>
+      <small><span class="t-az">Zənglərin qəbulu</span><span class="t-ru">Приём звонков</span></small>
+    </div>
+    <div class="role-card" data-role="smm">
+      <span class="title">SMM meneceri</span>
+      <small><span class="t-az">Postlar, müraciətlər</span><span class="t-ru">Посты, обращения</span></small>
+    </div>
+    <div class="role-card" data-role="marketing">
+      <span class="title"><span class="t-az">Marketinq meneceri</span><span class="t-ru">Маркетинг-менеджер</span></span>
+      <small><span class="t-az">Lidlər və kampaniyalar</span><span class="t-ru">Лиды и кампании</span></small>
+    </div>
+    <div class="role-card" data-role="accountant">
+      <span class="title"><span class="t-az">Mühasib</span><span class="t-ru">Бухгалтер</span></span>
+      <small><span class="t-az">Ödənişlər və borclar</span><span class="t-ru">Платежи и долги</span></small>
+    </div>
+  </div>
+
+  <!-- Директор -->
+  <div class="form-section active" id="form-director">
+    <div class="section-title">
+      <span class="t-az">Direktorun gündəlik hesabatı</span>
+      <span class="t-ru">Дневной отчёт директора</span>
+    </div>
+    <div class="section-subtitle">
+      <span class="t-az">Analiz, idarəetmə və əsas qərarlar.</span>
+      <span class="t-ru">Аналитика, управление и ключевые решения.</span>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label><span class="t-az">Günün əsas prioritetləri:</span><span class="t-ru">Ключевые приоритеты дня:</span></label>
+        <textarea id="dir_priorities"></textarea>
+      </div>
+      <div class="field">
+        <label><span class="t-az">Hesabatların analizi:</span><span class="t-ru">Анализ отчётов по отделам:</span></label>
+        <textarea id="dir_reports_review"></textarea>
+      </div>
+    </div>
+
+    <div class="field">
+      <label><span class="t-az">Bitrix-də görülmüş işlər:</span><span class="t-ru">Работа в Битрикс:</span></label>
+      <textarea id="dir_bitrix_activity"></textarea>
+    </div>
+
+    <div class="field">
+      <label><span class="t-az">Əsas qərarlar və risklər:</span><span class="t-ru">Ключевые решения и риски:</span></label>
+      <textarea id="dir_decisions"></textarea>
+    </div>
+  </div>
+
+  <!-- Продажи -->
+  <div class="form-section" id="form-sales">
+    <div class="section-title"><span class="t-az">Korparativ satışlar</span><span class="t-ru">Корпоративные продажи</span></div>
+    <div class="section-subtitle"><span class="t-az">Bugünkü real nəticələr.</span><span class="t-ru">Фактические результаты за сегодня.</span></div>
+
+    <div class="field-row">
+      <div class="field">
+        <label><span class="t-az">Yeni lead-lər:</span><span class="t-ru">Новые лиды:</span></label>
+        <input type="number" id="sales_new_leads" min="0">
+      </div>
+      <div class="field">
+        <label><span class="t-az">Zənglərin sayı:</span><span class="t-ru">Кол-во звонков:</span></label>
+        <input type="number" id="sales_calls" min="0">
+      </div>
+      <div class="field">
+        <label><span class="t-az">Göndərilən təkliflər (KП):</span><span class="t-ru">Отправленные КП:</span></label>
+        <input type="number" id="sales_offers" min="0">
+      </div>
+      <div class="field">
+        <label><span class="t-az">Görüşlərin sayı:</span><span class="t-ru">Кол-во встреч:</span></label>
+        <input type="number" id="sales_meetings" min="0">
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label><span class="t-az">Yeni müqavilələr:</span><span class="t-ru">Новые сделки:</span></label>
+        <input type="number" id="sales_new_deals" min="0">
+      </div>
+      <div class="field">
+        <label><span class="t-az">Yeni müqavilələrin məbləği (AZN):</span><span class="t-ru">Сумма новых сделок (AZN):</span></label>
+        <input type="number" id="sales_deals_amount" min="0" step="0.01">
+      </div>
+      <div class="field">
+        <label><span class="t-az">Itirilən müqavilələr:</span><span class="t-ru">Потерянные сделки:</span></label>
+        <input type="number" id="sales_lost_deals" min="0">
+      </div>
+    </div>
+
+    <div class="field">
+      <label><span class="t-az">Əsas imtina səbəbləri:</span><span class="t-ru">Основные причины отказов:</span></label>
+      <textarea id="sales_reasons"></textarea>
+    </div>
+
+    <div class="field">
+      <label><span class="t-az">Günün əsas nəticələri və qeydlər:</span><span class="t-ru">Ключевые итоги дня и комментарии:</span></label>
+      <textarea id="sales_notes"></textarea>
+    </div>
+  </div>
+
+  <!-- Сервис -->
+  <div class="form-section" id="form-service">
+    <div class="section-title"><span class="t-az">Servis</span><span class="t-ru">Сервис</span></div>
+    <div class="section-subtitle"><span class="t-az">Sifarişlər, səfərlər, tamamlanmış işlər.</span><span class="t-ru">Заявки, выезды, выполненные работы.</span></div>
+
+    <div class="field-row">
+      <div class="field">
+        <label><span class="t-az">Gələn servis müraciətləri:</span><span class="t-ru">Входящие сервисные заявки:</span></label>
+        <input type="number" id="service_requests" min="0">
+      </div>
+      <div class="field">
+        <label><span class="t-az">Planlaşdırılmış səfərlər:</span><span class="t-ru">Запланированные выезды:</span></label>
+        <input type="number" id="service_planned" min="0">
+      </div>
+      <div class="field">
+        <label><span class="t-az">Başa çatmış səfərlər:</span><span class="t-ru">Завершённые выезды:</span></label>
+        <input type="number" id="service_done" min="0">
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label><span class="t-az">Servis gəliri (AZN):</span><span class="t-ru">Доход сервиса (AZN):</span></label>
+        <input type="number" id="service_revenue" min="0" step="0.01">
+      </div>
+      <div class="field">
+        <label><span class="t-az">Ehtiyat hissələri (AZN):</span><span class="t-ru">Запчасти (AZN):</span></label>
+        <input type="number" id="service_spares" min="0" step="0.01">
+      </div>
+    </div>
+
+    <div class="field">
+      <label><span class="t-az">Əsas texniki problemlər:</span><span class="t-ru">Основные технические проблемы:</span></label>
+      <textarea id="service_problems"></textarea>
+    </div>
+
+    <div class="field">
+      <label><span class="t-az">Müştəri şikayətləri və qeydlər:</span><span class="t-ru">Жалобы клиентов и комментарии:</span></label>
+      <textarea id="service_complaints"></textarea>
+    </div>
+  </div>
+
+  <!-- Офис -->
+  <div class="form-section" id="form-office">
+    <div class="section-title"><span class="t-az">Ofis meneceri</span><span class="t-ru">Офис-менеджер</span></div>
+    <div class="section-subtitle"><span class="t-az">Zəng və müraciətlərin qeydiyyatı.</span><span class="t-ru">Приём и регистрация звонков и заявок.</span></div>
+
+    <div class="field-row">
+      <div class="field">
+        <label><span class="t-az">Qəbul edilən zənglər:</span><span class="t-ru">Принятые звонки:</span></label>
+        <input type="number" id="office_calls" min="0">
+      </div>
+      <div class="field">
+        <label><span class="t-az">Qeydiyyata alınan müraciətlər:</span><span class="t-ru">Зарегистрированные заявки:</span></label>
+        <input type="number" id="office_requests" min="0">
+      </div>
+      <div class="field">
+        <label><span class="t-az">Yanlış və ya natamam qeydiyyat:</span><span class="t-ru">Неверно/неполно оформленные заявки:</span></label>
+        <input type="number" id="office_wrong" min="0">
+      </div>
+    </div>
+
+    <div class="field">
+      <label><span class="t-az">Əsas səhvlər və qeydlər:</span><span class="t-ru">Основные ошибки и комментарии:</span></label>
+      <textarea id="office_notes"></textarea>
+    </div>
+  </div>
+
+  <!-- SMM -->
+  <div class="form-section" id="form-smm">
+    <div class="section-title">SMM</div>
+    <div class="section-subtitle">
+      <span class="t-az">Kontent və sosial şəbəkələrdən gələn reaksiyalar.</span>
+      <span class="t-ru">Контент и отклик из соцсетей.</span>
+    </div>
+
+    <div class="field-row">
+      <div class="field"><label>Postlar / Посты:</label><input type="number" id="smm_posts" min="0"></div>
+      <div class="field"><label>Story / Сторис:</label><input type="number" id="smm_stories" min="0"></div>
+      <div class="field">
+        <label><span class="t-az">Sosial şəbəkələrdən gələn müraciətlər:</span><span class="t-ru">Заявки из соцсетей:</span></label>
+        <input type="number" id="smm_leads" min="0">
+      </div>
+    </div>
+
+    <div class="field">
+      <label><span class="t-az">Ən yaxşı post (link və qısa şərh):</span><span class="t-ru">Лучший пост (ссылка и краткий комментарий):</span></label>
+      <textarea id="smm_best_post"></textarea>
+    </div>
+  </div>
+
+  <!-- Маркетинг -->
+  <div class="form-section" id="form-marketing">
+    <div class="section-title"><span class="t-az">Marketinq</span><span class="t-ru">Маркетинг</span></div>
+    <div class="section-subtitle"><span class="t-az">Lidlər və kampaniyalar üzrə gündəlik nəticələr.</span><span class="t-ru">Ежедневные результаты по лидам и кампаниям.</span></div>
+
+    <div class="field-row">
+      <div class="field"><label>Lead-lər / Лиды:</label><input type="number" id="mkt_leads" min="0"></div>
+      <div class="field">
+        <label><span class="t-az">Bugünkü reklam xərci (AZN):</span><span class="t-ru">Сегодняшние рекламные расходы (AZN):</span></label>
+        <input type="number" id="mkt_spend" min="0" step="0.01">
+      </div>
+    </div>
+
+    <div class="field">
+      <label><span class="t-az">Aktiv kampaniyalar və nəticələri:</span><span class="t-ru">Активные кампании и их результаты:</span></label>
+      <textarea id="mkt_campaigns"></textarea>
+    </div>
+  </div>
+
+  <!-- Бухгалтер -->
+  <div class="form-section" id="form-accountant">
+    <div class="section-title"><span class="t-аз">Mühasib</span><span class="t-ru">Бухгалтер</span></div>
+    <div class="section-subtitle"><span class="t-az">Gündəlik ödəniş və borc vəziyyəti.</span><span class="t-ru">Ежедневное состояние платежей и задолженности.</span></div>
+
+    <div class="field-row">
+      <div class="field">
+        <label><span class="t-az">Gələn ödənişlər (AZN):</span><span class="t-ru">Входящие платежи (AZN):</span></label>
+        <input type="number" id="acc_in_amount" min="0" step="0.01">
+      </div>
+      <div class="field">
+        <label><span class="t-az">Gedən ödənişlər (AZN):</span><span class="t-ru">Исходящие платежи (AZN):</span></label>
+        <input type="number" id="acc_out_amount" min="0" step="0.01">
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label><span class="t-az">Cari debitor borc (AZN):</span><span class="t-ru">Текущая дебиторка (AZN):</span></label>
+        <input type="number" id="acc_deb_current" min="0" step="0.01">
+      </div>
+      <div class="field">
+        <label><span class="t-az">Gecikmiş debitor borc (AZN):</span><span class="t-ru">Просроченная дебиторка (AZN):</span></label>
+        <input type="number" id="acc_deb_overdue" min="0" step="0.01">
+      </div>
+    </div>
+
+    <div class="field">
+      <label><span class="t-az">Qeydlər və risklər:</span><span class="t-ru">Комментарии и риски:</span></label>
+      <textarea id="acc_notes"></textarea>
+    </div>
+  </div>
+
+  <!-- Кнопка отправки -->
+  <div class="footer-row">
+    <div class="left-meta">
+      <span class="t-az">Məlumat Google Sheet-ə JSON formatında ötürüləcək.</span>
+      <span class="t-ru">Данные будут отправлены в Google Sheet в формате JSON.</span>
+    </div>
+    <button class="btn-primary" id="submitBtn">
+      <span class="t-az">Göndər</span>
+      <span class="t-ru">Отправить</span>
+    </button>
+  </div>
+
+  <div class="status" id="status"></div>
+</div>
+
+<!-- ✅ Оверлей с галочкой -->
+<div class="success-overlay" id="successOverlay">
+  <div class="success-box">
+    <div class="success-icon">✅</div>
+    <div class="success-text t-ru">Отправлено</div>
+    <div class="success-text t-az">Göndərildi</div>
+  </div>
+</div>
+
+<script>
+  // Твой WebApp URL Google Apps Script
+  const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwLQHGMyxfDqA85jJNpEpiyBFmckFaU1OyeEwwTtODQO1iyN9LHQonvhi7PBRnXAxHC/exec";
+
+  // Переключение языка
+  const langButtons = document.querySelectorAll(".lang-btn");
+  const htmlRoot = document.documentElement;
+
+  langButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const lang = btn.getAttribute("data-lang");
+      langButtons.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      htmlRoot.classList.toggle("lang-ru", lang === "ru");
+      htmlRoot.classList.toggle("lang-az", lang === "az");
+    });
+  });
+
+  // Сегодняшняя дата по умолчанию
+  const dateInput = document.getElementById("reportDate");
+  const today = new Date();
+  dateInput.value = today.toISOString().slice(0, 10);
+
+  // Переключение ролей
+  const roleCards = document.querySelectorAll(".role-card");
+  const sections = {
+    director: document.getElementById("form-director"),
+    sales: document.getElementById("form-sales"),
+    service: document.getElementById("form-service"),
+    office: document.getElementById("form-office"),
+    smm: document.getElementById("form-smm"),
+    marketing: document.getElementById("form-marketing"),
+    accountant: document.getElementById("form-accountant")
+  };
+
+  let currentRole = "director";
+
+  roleCards.forEach(card => {
+    card.addEventListener("click", () => {
+      const role = card.getAttribute("data-role");
+      currentRole = role;
+      roleCards.forEach(c => c.classList.remove("active"));
+      card.classList.add("active");
+      Object.keys(sections).forEach(key => {
+        sections[key].classList.toggle("active", key === role);
+      });
+    });
+  });
+
+  // Сбор данных по ролям
+  function getRoleData(role) {
+    const data = { role };
+
+    if (role === "director") {
+      data.priorities = document.getElementById("dir_priorities").value.trim();
+      data.reports_review = document.getElementById("dir_reports_review").value.trim();
+      data.bitrix_activity = document.getElementById("dir_bitrix_activity").value.trim();
+      data.decisions = document.getElementById("dir_decisions").value.trim();
+    }
+
+    if (role === "sales") {
+      data.new_leads = +document.getElementById("sales_new_leads").value || 0;
+      data.calls = +document.getElementById("sales_calls").value || 0;
+      data.offers = +document.getElementById("sales_offers").value || 0;
+      data.meetings = +document.getElementById("sales_meetings").value || 0;
+      data.new_deals = +document.getElementById("sales_new_deals").value || 0;
+      data.deals_amount = +document.getElementById("sales_deals_amount").value || 0;
+      data.lost_deals = +document.getElementById("sales_lost_deals").value || 0;
+      data.reasons = document.getElementById("sales_reasons").value.trim();
+      data.notes = document.getElementById("sales_notes").value.trim();
+    }
+
+    if (role === "service") {
+      data.requests = +document.getElementById("service_requests").value || 0;
+      data.planned = +document.getElementById("service_planned").value || 0;
+      data.done = +document.getElementById("service_done").value || 0;
+      data.revenue = +document.getElementById("service_revenue").value || 0;
+      data.spares = +document.getElementById("service_spares").value || 0;
+      data.problems = document.getElementById("service_problems").value.trim();
+      data.complaints = document.getElementById("service_complaints").value.trim();
+    }
+
+    if (role === "office") {
+      data.calls = +document.getElementById("office_calls").value || 0;
+      data.requests = +document.getElementById("office_requests").value || 0;
+      data.wrong = +document.getElementById("office_wrong").value || 0;
+      data.notes = document.getElementById("office_notes").value.trim();
+    }
+
+    if (role === "smm") {
+      data.posts = +document.getElementById("smm_posts").value || 0;
+      data.stories = +document.getElementById("smm_stories").value || 0;
+      data.leads = +document.getElementById("smm_leads").value || 0;
+      data.best_post = document.getElementById("smm_best_post").value.trim();
+    }
+
+    if (role === "marketing") {
+      data.leads = +document.getElementById("mkt_leads").value || 0;
+      data.spend = +document.getElementById("mkt_spend").value || 0;
+      data.campaigns = document.getElementById("mkt_campaigns").value.trim();
+    }
+
+    if (role === "accountant") {
+      data.in_amount = +document.getElementById("acc_in_amount").value || 0;
+      data.out_amount = +document.getElementById("acc_out_amount").value || 0;
+      data.deb_current = +document.getElementById("acc_deb_current").value || 0;
+      data.deb_overdue = +document.getElementById("acc_deb_overdue").value || 0;
+      data.notes = document.getElementById("acc_notes").value.trim();
+    }
+
+    return data;
+  }
+
+  // Показ оверлея
+  function showSuccessOverlay() {
+    const overlay = document.getElementById("successOverlay");
+    overlay.style.display = "flex";
+    setTimeout(() => {
+      overlay.style.display = "none";
+    }, 2000);
+  }
+
+  // Отправка
+  document.getElementById("submitBtn").addEventListener("click", function () {
+    const statusEl = document.getElementById("status");
+    statusEl.className = "status";
+    statusEl.textContent = "";
+
+    const date = document.getElementById("reportDate").value;
+    const employee = document.getElementById("employeeName").value.trim();
+    const department = document.getElementById("department").value.trim();
+    const lang = htmlRoot.classList.contains("lang-az") ? "AZ" : "RU";
+
+    if (!date) {
+      statusEl.textContent = "Укажите дату / Tarixi seçin.";
+      statusEl.classList.add("err");
+      return;
+    }
+
+    if (!employee || !department) {
+      statusEl.textContent = "ФИО və şöbə mütləqdir. / ФИО и отдел обязательны.";
+      statusEl.classList.add("err");
+      return;
+    }
+
+    const payload = {
+      periodType: "day",
+      periodFrom: date,
+      employee: employee,
+      department: department,
+      role: currentRole,
+      language: lang,
+      dataJSON: JSON.stringify(getRoleData(currentRole))
+      // Остальные поля (flags и т.п.) рассчитываются в Code.gs
+    };
+
+    const btn = this;
+    btn.disabled = true;
+
+    fetch(GOOGLE_SCRIPT_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(payload)
+    }).then(() => {
+      statusEl.textContent = lang === "AZ"
+        ? "Hesabat göndərildi."
+        : "Отчёт отправлен.";
+      statusEl.classList.add("ok");
+      btn.disabled = false;
+      showSuccessOverlay();
+    }).catch(err => {
+      console.error(err);
+      statusEl.textContent = lang === "AZ"
+        ? "Göndərmə zamanı xəta."
+        : "Ошибка при отправке.";
+      statusEl.classList.add("err");
+      btn.disabled = false;
+    });
+  });
+</script>
+</body>
+</html>

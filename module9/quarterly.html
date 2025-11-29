@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ru" class="lang-ru">
+<head>
+<meta charset="UTF-8">
+<title class="t-ru">Стратегический квартальный отчёт</title>
+<title class="t-az">Strateji rüblük hesabat</title>
+<style>
+body{font-family:system-ui;background:#f4f6fb;margin:0}
+.page{max-width:1200px;margin:20px auto;background:#fff;padding:20px;border-radius:16px;box-shadow:0 10px 25px rgba(0,0,0,.08);position:relative}
+.lang-switcher{position:absolute;top:10px;right:15px}
+.lang-btn{border:none;padding:4px 10px;border-radius:999px;cursor:pointer;background:#edf1ff}
+.lang-btn.active{background:#316cff;color:white}
+
+h1{text-align:center}
+.sub{text-align:center;font-size:13px;color:#666}
+
+.top-row{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:12px}
+.field{display:flex;flex-direction:column;gap:4px;flex:1 1 200px}
+label{font-size:12px}
+
+input,textarea,select{padding:7px;border-radius:8px;border:1px solid #ccd5f0}
+textarea{min-height:70px}
+
+.role-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin:15px 0}
+.role-card{padding:10px;border-radius:12px;border:1px solid #d0d7ed;background:#f7f8ff;cursor:pointer;text-align:center}
+.role-card.active{background:#316cff;color:#fff}
+
+.form-section{display:none;background:#f9fbff;border:1px solid #d0d7ed;padding:15px;border-radius:12px;margin-bottom:15px}
+.form-section.active{display:block}
+
+.block-title{font-weight:600;margin-top:12px;margin-bottom:4px}
+
+.btn{background:#316cff;color:white;border:none;padding:10px 18px;border-radius:999px;cursor:pointer}
+.status{font-size:12px;margin-top:8px}
+
+.t-ru{display:inline}
+.t-az{display:none}
+.lang-az .t-ru{display:none}
+.lang-az .t-az{display:inline}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="lang-switcher">
+<button class="lang-btn active" data-lang="ru">RU</button>
+<button class="lang-btn" data-lang="az">AZ</button>
+</div>
+
+<h1>
+<span class="t-ru">Стратегический квартальный отчёт</span>
+<span class="t-az">Strateji rüblük hesabat</span>
+</h1>
+<div class="sub">
+<span class="t-ru">Управленческий анализ за квартал</span>
+<span class="t-az">Rüb üzrə idarəetmə analizi</span>
+</div>
+
+<div class="top-row">
+<div class="field">
+<label><span class="t-ru">Год</span><span class="t-az">İl</span></label>
+<input id="year">
+</div>
+<div class="field">
+<label><span class="t-ru">Квартал</span><span class="t-az">Rüb</span></label>
+<select id="quarter">
+<option>Q1</option><option>Q2</option><option>Q3</option><option>Q4</option>
+</select>
+</div>
+<div class="field">
+<label><span class="t-ru">ФИО</span><span class="t-az">Ad Soyad</span></label>
+<input id="employeeName">
+</div>
+<div class="field">
+<label><span class="t-ru">Отдел</span><span class="t-az">Şöbə</span></label>
+<input id="department">
+</div>
+</div>
+
+<div class="role-grid">
+<div class="role-card active" data-role="director"><span class="t-ru">Директор</span><span class="t-az">Direktor</span></div>
+<div class="role-card" data-role="sales"><span class="t-ru">Продажи</span><span class="t-az">Satış</span></div>
+<div class="role-card" data-role="service"><span class="t-ru">Сервис</span><span class="t-az">Servis</span></div>
+<div class="role-card" data-role="office"><span class="t-ru">Офис</span><span class="t-az">Ofis</span></div>
+<div class="role-card" data-role="smm"><span class="t-ru">SMM</span><span class="t-az">SMM</span></div>
+<div class="role-card" data-role="marketing"><span class="t-ru">Маркетинг</span><span class="t-az">Marketinq</span></div>
+<div class="role-card" data-role="accountant"><span class="t-ru">Бухгалтер</span><span class="t-az">Mühasib</span></div>
+</div>
+
+<!-- DIRECTOR -->
+<div id="form-director" class="form-section active">
+<div class="block-title"><span class="t-ru">1. Финансы</span><span class="t-az">1. Maliyyə</span></div>
+<input id="fin_turnover" placeholder="Оборот / Dövriyyə">
+<input id="fin_service" placeholder="Доход сервиса / Servis gəliri">
+<input id="fin_profit" placeholder="Прибыль / Mənfəət">
+<input id="fin_ebitda" placeholder="EBITDA %">
+<input id="fin_cashflow" placeholder="Денежный поток / Nağd axın">
+<textarea id="fin_notes" placeholder="Комментарии / Şərhlər"></textarea>
+
+<div class="block-title"><span class="t-ru">2. Продажи</span><span class="t-az">2. Satış</span></div>
+<input id="dir_deals" placeholder="Сделки / Müqavilələr">
+<input id="dir_lost" placeholder="Потери / İtkilər">
+<input id="dir_avg" placeholder="Средний чек / Orta məbləğ">
+<input id="dir_conv" placeholder="Конверсия %">
+<input id="dir_plan" placeholder="Выполнение плана % / Plan icrası">
+
+<div class="block-title"><span class="t-ru">3. Сервис</span><span class="t-az">3. Servis</span></div>
+<input id="dir_service_calls" placeholder="Заявки / Müraciətlər">
+<input id="dir_service_downtime" placeholder="Простой часы / Dayanma (saat)">
+<input id="dir_service_repeats" placeholder="Повторные / Təkrarlar">
+<input id="dir_service_income" placeholder="Доход / Gəlir">
+<input id="dir_service_sla" placeholder="SLA %">
+
+<div class="block-title"><span class="t-ru">4. Маркетинг</span><span class="t-az">4. Marketinq</span></div>
+<input id="dir_mkt_spend" placeholder="Расход / Xərc">
+<input id="dir_mkt_cpl" placeholder="CPL">
+<input id="dir_mkt_leads" placeholder="Лиды / Lead-lər">
+<input id="dir_mkt_roi" placeholder="ROI %">
+
+<div class="block-title"><span class="t-ru">5. Персонал</span><span class="t-az">5. Personal</span></div>
+<input id="dir_staff" placeholder="Сотрудники / Heyət">
+<input id="dir_turnover" placeholder="Текучка % / Dövriyyə">
+<input id="dir_productivity" placeholder="Производительность / Səmərəlilik">
+
+<div class="block-title"><span class="t-ru">6. Процессы</span><span class="t-az">6. Proseslər</span></div>
+<textarea id="dir_proc_done" placeholder="Что внедрено / Nə icra olunub"></textarea>
+<textarea id="dir_proc_block" placeholder="Проблемы / Problemlər"></textarea>
+
+<div class="block-title"><span class="t-ru">7. Стратегия</span><span class="t-az">7. Strategiya</span></div>
+<textarea id="dir_focus" placeholder="Фокус / Fokus"></textarea>
+<textarea id="dir_risk" placeholder="Риски / Risklər"></textarea>
+<textarea id="dir_decisions" placeholder="Решения / Qərarlar"></textarea>
+</div>
+
+<!-- SALES -->
+<div id="form-sales" class="form-section">
+<input id="sales_plan" placeholder="План / Plan">
+<input id="sales_fact" placeholder="Факт / Fakt">
+<input id="sales_pct" placeholder="Выполнение % / İcra %">
+<input id="sales_deals" placeholder="Сделки / Müqavilələr">
+<textarea id="sales_problems" placeholder="Проблемы / Problemlər"></textarea>
+<textarea id="sales_next" placeholder="План на след. кв. / Növbəti rüb planı"></textarea>
+</div>
+
+<!-- SERVICE -->
+<div id="form-service" class="form-section">
+<input id="srv_calls" placeholder="Заявки / Müraciətlər">
+<input id="srv_visits" placeholder="Выезды / Səfərlər">
+<input id="srv_income" placeholder="Доход / Gəlir">
+<input id="srv_sla" placeholder="SLA %">
+<input id="srv_repeat" placeholder="Повторы / Təkrarlar">
+<textarea id="srv_issues" placeholder="Проблемы / Problemlər"></textarea>
+<textarea id="srv_improve" placeholder="Улучшения / Təkmilləşmə"></textarea>
+</div>
+
+<!-- OFFICE -->
+<div id="form-office" class="form-section">
+<input id="off_calls" placeholder="Обращения / Müraciətlər">
+<input id="off_errors" placeholder="Ошибки / Səhvlər">
+<input id="off_valid" placeholder="Квалиф. лиды / Keyfiyyətli lead-lər">
+<textarea id="off_notes" placeholder="Комментарии / Qeydlər"></textarea>
+</div>
+
+<!-- SMM -->
+<div id="form-smm" class="form-section">
+<input id="smm_posts" placeholder="Посты / Postlar">
+<input id="smm_reach" placeholder="Охват / Əhatə">
+<input id="smm_leads" placeholder="Лиды / Lead-lər">
+<textarea id="smm_best" placeholder="Лучшие посты / Uğurlu kontent"></textarea>
+</div>
+
+<!-- MARKETING -->
+<div id="form-marketing" class="form-section">
+<input id="mkt_budget" placeholder="Бюджет / Büdcə">
+<input id="mkt_leads" placeholder="Лиды / Lead-lər">
+<input id="mkt_cpl" placeholder="CPL">
+<input id="mkt_ctr" placeholder="CTR">
+<textarea id="mkt_best" placeholder="Лучшие кампании / Uğurlu kampaniyalar"></textarea>
+</div>
+
+<!-- ACCOUNTANT -->
+<div id="form-accountant" class="form-section">
+<input id="acc_profit" placeholder="Прибыль / Mənfəət">
+<input id="acc_debt" placeholder="Долги / Borclar">
+<input id="acc_paid" placeholder="Оплаты / Ödənişlər">
+<textarea id="acc_tax" placeholder="Налоги / Vergilər, риск"></textarea>
+</div>
+
+<button class="btn" id="sendBtn">
+<span class="t-ru">Отправить отчёт</span>
+<span class="t-az">Hesabatı göndər</span>
+</button>
+<div class="status" id="status"></div>
+
+</div>
+
+<script>
+const GOOGLE_SCRIPT_URL="https://script.google.com/macros/s/AKfycbyrb3vA5bb_5tzJXJTzihRbrS-6e415-MwEhro3jPMvpEMJC-BCxqP5E2ESTq8Rkp3g/exec";
+let role="director";
+
+document.querySelectorAll(".lang-btn").forEach(btn=>{
+btn.onclick=()=>{
+document.documentElement.className=btn.dataset.lang==="az"?"lang-az":"lang-ru";
+document.querySelectorAll(".lang-btn").forEach(b=>b.classList.remove("active"));
+btn.classList.add("active");
+}
+});
+
+document.querySelectorAll(".role-card").forEach(card=>{
+card.onclick=()=>{
+document.querySelectorAll(".role-card").forEach(c=>c.classList.remove("active"));
+card.classList.add("active");
+role=card.dataset.role;
+document.querySelectorAll(".form-section").forEach(f=>f.classList.remove("active"));
+document.getElementById("form-"+role).classList.add("active");
+}
+});
+
+function getData(){
+const d={role:role};
+document.querySelectorAll("#form-"+role+" input, #form-"+role+" textarea").forEach(el=>{
+d[el.id]=el.value;
+});
+return d;
+}
+
+document.getElementById("sendBtn").onclick=()=>{
+const payload={
+periodType:"quarter",
+year:document.getElementById("year").value,
+quarter:document.getElementById("quarter").value,
+employee:document.getElementById("employeeName").value,
+department:document.getElementById("department").value,
+role:role,
+language:document.documentElement.className==="lang-ru"?"RU":"AZ",
+dataJSON:JSON.stringify(getData())
+};
+
+fetch(GOOGLE_SCRIPT_URL,{
+method:"POST",
+mode:"no-cors",
+body:JSON.stringify(payload)
+});
+
+document.getElementById("status").innerText=
+document.documentElement.className==="lang-ru"
+? "Отчёт отправлен"
+: "Hesabat göndərildi";
+}
+</script>
+
+</body>
+</html>

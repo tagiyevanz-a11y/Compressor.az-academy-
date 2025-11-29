@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="ru" class="lang-ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Həftəlik hesabat / Недельный отчёт</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f4f6fb;
+      color: #222;
+    }
+
+    .page {
+      max-width: 1100px;
+      margin: 20px auto 40px;
+      padding: 20px;
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+      position: relative;
+    }
+
+    h1 {
+      font-size: 24px;
+      margin-bottom: 6px;
+      text-align: center;
+    }
+
+    .sub {
+      text-align: center;
+      color: #666;
+      margin-bottom: 18px;
+      font-size: 13px;
+    }
+
+    .lang-switcher {
+      position: absolute;
+      top: 14px;
+      right: 18px;
+      display: inline-flex;
+      gap: 4px;
+      padding: 2px;
+      border-radius: 999px;
+      background: #edf1ff;
+      border: 1px solid #c8d2ff;
+    }
+
+    .lang-btn {
+      border: none;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      cursor: pointer;
+      background: transparent;
+      color: #445;
+    }
+
+    .lang-btn.active {
+      background: #316cff;
+      color: #fff;
+      box-shadow: 0 0 10px rgba(49,108,255,0.6);
+    }
+
+    .period-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 18px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .period-row label {
+      font-size: 13px;
+      color: #444;
+    }
+
+    .period-row input {
+      padding: 6px 10px;
+      border-radius: 8px;
+      border: 1px solid #d0d7ed;
+      font-size: 13px;
+    }
+
+    .role-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .role-card {
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid #d0d7ed;
+      background: #f7f8ff;
+      cursor: pointer;
+      font-size: 13px;
+      line-height: 1.3;
+      transition: all 0.15s ease;
+      text-align: center;
+    }
+
+    .role-card span.title {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 3px;
+    }
+
+    .role-card small {
+      display: block;
+      color: #777;
+      font-size: 11px;
+    }
+
+    .role-card.active {
+      background: #316cff;
+      color: #fff;
+      border-color: #316cff;
+      box-shadow: 0 6px 16px rgba(49,108,255,0.4);
+    }
+
+    .role-card.active small {
+      color: #e5ebff;
+    }
+
+    .form-section {
+      display: none;
+      border-radius: 14px;
+      border: 1px solid #d0d7ed;
+      padding: 16px 18px;
+      background: #f9fbff;
+      margin-bottom: 20px;
+    }
+
+    .form-section.active {
+      display: block;
+    }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .section-subtitle {
+      font-size: 12px;
+      color: #666;
+      margin-bottom: 10px;
+    }
+
+    .field-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 10px 14px;
+      margin-bottom: 10px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    label {
+      font-size: 13px;
+      color: #333;
+    }
+
+    input[type="number"],
+    input[type="text"],
+    textarea,
+    input[type="date"] {
+      padding: 7px 9px;
+      border: 1px solid #ccd5f0;
+      border-radius: 8px;
+      font-size: 13px;
+      resize: vertical;
+      min-height: 32px;
+      box-sizing: border-box;
+      background: #fff;
+    }
+
+    textarea {
+      min-height: 60px;
+    }
+
+    input:focus,
+    textarea:focus {
+      outline: none;
+      border-color: #316cff;
+      box-shadow: 0 0 0 2px rgba(49,108,255,0.15);
+    }
+
+    .top-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .top-row .field {
+      flex: 1 1 220px;
+    }
+
+    .footer-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 10px;
+    }
+
+    .left-meta {
+      font-size: 11px;
+      color: #777;
+    }
+
+    .btn-primary {
+      padding: 9px 18px;
+      border-radius: 999px;
+      border: none;
+      font-size: 13px;
+      font-weight: 600;
+      background: #316cff;
+      color: #fff;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 8px 18px rgba(49,108,255,0.45);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.6;
+      cursor: default;
+      box-shadow: none;
+    }
+
+    .status {
+      margin-top: 10px;
+      font-size: 12px;
+      min-height: 16px;
+    }
+
+    .status.ok { color: #138000; }
+    .status.err { color: #b00020; }
+
+    .hint {
+      font-size: 11px;
+      color: #888;
+      margin-top: 6px;
+    }
+
+    /* Двуязычные элементы */
+    .t { }
+    .t-ru { display: inline; }
+    .t-az { display: none; }
+
+    .lang-az .t-ru { display: none; }
+    .lang-az .t-az { display: inline; }
+    .lang-ru .t-ru { display: inline; }
+    .lang-ru .t-az { display: none; }
+
+    @media (max-width: 600px) {
+      .page {
+        margin: 10px;
+        padding: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+  <!-- Переключатель языка -->
+  <div class="lang-switcher">
+    <button type="button" class="lang-btn active" data-lang="ru">RU</button>
+    <button type="button" class="lang-btn" data-lang="az">AZ</button>
+  </div>
+
+  <h1>
+    <span class="t t-az">Həftəlik hesabat forması</span>
+    <span class="t t-ru">Форма недельного отчёта</span>
+  </h1>
+  <div class="sub">
+    <span class="t t-az">Həftə ərzində əldə etdiyiniz nəticələri qeyd edin.</span>
+    <span class="t t-ru">Заполните результаты за неделю по своей роли.</span>
+  </div>
+
+  <!-- Период недели -->
+  <div class="period-row">
+    <label>
+      <span class="t t-az">Həftənin başlanğıcı:</span>
+      <span class="t t-ru">Начало недели:</span>
+      <input type="date" id="weekStart">
+    </label>
+    <label>
+      <span class="t t-az">Həftənin sonu:</span>
+      <span class="t t-ru">Конец недели:</span>
+      <input type="date" id="weekEnd">
+    </label>
+  </div>
+
+  <!-- ФИО и отдел -->
+  <div class="top-row">
+    <div class="field">
+      <label>
+        <span class="t t-az">Ad, soyad:</span>
+        <span class="t t-ru">ФИО:</span>
+      </label>
+      <input type="text" id="employeeName" placeholder="Elşan Ramazanov">
+    </div>
+    <div class="field">
+      <label>
+        <span class="t t-az">Şöbə:</span>
+        <span class="t t-ru">Отдел:</span>
+      </label>
+      <input type="text" id="department" placeholder="Satış / Servis / Ofis / Marketinq / Mühasibat">
+    </div>
+  </div>
+
+  <!-- Выбор роли -->
+  <div class="role-grid" id="roleGrid">
+    <div class="role-card active" data-role="sales">
+      <span class="title">
+        <span class="t t-az">Korparativ satış meneceri</span>
+        <span class="t t-ru">Менеджер по корпоративным продажам</span>
+      </span>
+      <small>
+        <span class="t t-az">Həftəlik satış nəticələri</span>
+        <span class="t t-ru">Недельные итоги по продажам</span>
+      </small>
+    </div>
+    <div class="role-card" data-role="service">
+      <span class="title">
+        <span class="t t-az">Servis meneceri</span>
+        <span class="t t-ru">Сервис-менеджер</span>
+      </span>
+      <small>
+        <span class="t t-az">Sifarişlər, səfərlər, servis gəliri</span>
+        <span class="t t-ru">Заявки, выезды, доход сервиса</span>
+      </small>
+    </div>
+    <div class="role-card" data-role="office">
+      <span class="title">
+        <span class="t t-az">Ofis meneceri</span>
+        <span class="t t-ru">Офис-менеджер</span>
+      </span>
+      <small>
+        <span class="t t-az">Zəng və müraciətlərin qəbulu</span>
+        <span class="t t-ru">Приём звонков и заявок</span>
+      </small>
+    </div>
+    <div class="role-card" data-role="smm">
+      <span class="title">SMM meneceri</span>
+      <small>
+        <span class="t t-az">Postlar, müraciətlər, izləyicilər</span>
+        <span class="t t-ru">Посты, заявки, подписчики</span>
+      </small>
+    </div>
+    <div class="role-card" data-role="marketing">
+      <span class="title">
+        <span class="t t-az">Marketinq meneceri</span>
+        <span class="t t-ru">Маркетинг-менеджер</span>
+      </span>
+      <small>
+        <span class="t t-az">Lidlər, kampaniyalar, analitika</span>
+        <span class="t t-ru">Лиды, кампании, аналитика</span>
+      </small>
+    </div>
+    <div class="role-card" data-role="accountant">
+      <span class="title">
+        <span class="t t-az">Mühasib</span>
+        <span class="t t-ru">Бухгалтер</span>
+      </span>
+      <small>
+        <span class="t t-az">Ödənişlər, debitor borclar</span>
+        <span class="t t-ru">Платежи, дебиторка</span>
+      </small>
+    </div>
+  </div>
+
+  <!-- SALES -->
+  <div class="form-section active" id="form-sales">
+    <div class="section-title">
+      <span class="t t-az">Korparativ satışlar — həftəlik yekun</span>
+      <span class="t t-ru">Корпоративные продажи — итоги недели</span>
+    </div>
+    <div class="section-subtitle">
+      <span class="t t-az">Plan/fakt və əsas göstəricilər.</span>
+      <span class="t t-ru">План/факт и ключевые показатели.</span>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>Lead-lər / Лиды (cəmi):</label>
+        <input type="number" id="sales_total_leads" min="0">
+      </div>
+      <div class="field">
+        <label>
+          <span class="t t-az">Yeni lead-lər:</span>
+          <span class="t t-ru">Новые лиды:</span>
+        </label>
+        <input type="number" id="sales_new_leads" min="0">
+      </div>
+      <div class="field">
+        <label>Zənglərin sayı / Звонки:</label>
+        <input type="number" id="sales_calls" min="0">
+      </div>
+      <div class="field">
+        <label>KP / Təkliflər / КП:</label>
+        <input type="number" id="sales_offers" min="0">
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>Görüşlər / Встречи:</label>
+        <input type="number" id="sales_meetings" min="0">
+      </div>
+      <div class="field">
+        <label>
+          <span class="t t-az">Bağlanmış müqavilələr:</span>
+          <span class="t t-ru">Заключённые сделки:</span>
+        </label>
+        <input type="number" id="sales_new_deals" min="0">
+      </div>
+      <div class="field">
+        <label>
+          <span class="t t-az">Müqavilələrin məbləği (AZN):</span>
+          <span class="t t-ru">Сумма сделок (AZN):</span>
+        </label>
+        <input type="number" id="sales_deals_amount" min="0" step="0.01">
+      </div>
+      <div class="field">
+        <label>
+          <span class="t t-az">Itirilən müqavilələr:</span>
+          <span class="t t-ru">Потерянные сделки:</span>
+        </label>
+        <input type="number" id="sales_lost_deals" min="0">
+      </div>
+    </div>
+
+    <div class="field">
+      <label>
+        <span class="t t-az">Əsas imtina səbəbləri:</span>
+        <span class="t t-ru">Основные причины отказов:</span>
+      </label>
+      <textarea id="sales_reasons"></textarea>
+    </div>
+
+    <div class="field">
+      <label>
+        <span class="t t-az">Həftənin əsas nailiyyətləri:</span>
+        <span class="t t-ru">Ключевые достижения недели:</span>
+      </label>
+      <textarea id="sales_achievements"></textarea>
+    </div>
+
+    <div class="field">
+      <label>
+        <span class="t t-az">Növbəti həftə üçün plan:</span>
+        <span class="t t-ru">План на следующую неделю:</span>
+      </label>
+      <textarea id="sales_next_plan"></textarea>
+    </div>
+  </div>
+
+  <!-- SERVICE -->
+  <div class="form-section" id="form-service">
+    <div class="section-title">
+      <span class="t t-az">Servis — həftəlik yekun</span>
+      <span class="t t-ru">Сервис — итоги недели</span>
+    </div>
+    <div class="section-subtitle">
+      <span class="t t-az">Sifarişlər, səfərlər, gəlir və problemlər.</span>
+      <span class="t t-ru">Заявки, выезды, доход и проблемы.</span>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>
+          <span class="t t-az">Gələn servis müraciətləri:</span>
+          <span class="t t-ru">Входящие сервисные заявки:</span>
+        </label>
+        <input type="number" id="service_requests" min="0">
+      </div>
+      <div class="field">
+        <label>
+          <span class="t t-az">Başa çatmış səfərlər:</span>
+          <span class="t t-ru">Завершённые выезды:</span>
+        </label>
+        <input type="number" id="service_visits" min="0">
+      </div>
+      <div class="field">
+        <label>Servis gəliri (AZN):</label>
+        <input type="number" id="service_revenue" min="0" step="0.01">
+      </div>
+      <div class="field">
+        <label>
+          <span class="t t-az">Satılmış ehtiyat hissələri (AZN):</span>
+          <span class="t t-ru">Проданные запчасти (AZN):</span>
+        </label>
+        <input type="number" id="service_spare_parts" min="0" step="0.01">
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>
+          <span class="t t-az">Avadanlıq prostoy saatları:</span>
+          <span class="t t-ru">Часы простоев оборудования:</span>
+        </label>
+        <input type="number" id="service_downtime_hours" min="0" step="0.1">
+      </div>
+      <div class="field">
+        <label>
+          <span class="t t-az">Təkrar müraciətlər:</span>
+          <span class="t t-ru">Повторные обращения:</span>
+        </label>
+        <input type="number" id="service_repeats" min="0">
+      </div>
+    </div>
+
+    <div class="field">
+      <label>
+        <span class="t t-az">Əsas problemlər:</span>
+        <span class="t t-ru">Основные проблемы недели:</span>
+      </label>
+      <textarea id="service_problems"></textarea>
+    </div>
+
+    <div class="field">
+      <label>
+        <span class="t t-az">Müştəri şikayətləri:</span>
+        <span class="t t-ru">Жалобы клиентов:</span>
+      </label>
+      <textarea id="service_complaints"></textarea>
+    </div>
+
+    <div class="field">
+      <label>
+        <span class="t t-az">Növbəti həftə üçün plan:</span>
+        <span class="t t-ru">План на следующую неделю:</span>
+      </label>
+      <textarea id="service_next_plan"></textarea>
+    </div>
+  </div>
+
+  <!-- OFFICE -->
+  <div class="form-section" id="form-office">
+    <div class="section-title">
+      <span class="t t-az">Ofis meneceri — həftəlik yekun</span>
+      <span class="t t-ru">Офис-менеджер — итоги недели</span>
+    </div>
+    <div class="section-subtitle">
+      <span class="t t-az">Zənglər, müraciətlər və səhvlər.</span>
+      <span class="t t-ru">Звонки, заявки и ошибки.</span>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>Qəbul edilən zənglər / Принятые звонки:</label>
+        <input type="number" id="office_calls" min="0">
+      </div>
+      <div class="field">
+        <label>
+          <span class="t t-az">Qeydiyyata alınan müraciətlər:</span>
+          <span class="t t-ru">Зарегистрированные заявки:</span>
+        </label>
+        <input type="number" id="office_registered" min="0">
+      </div>
+      <div class="field">
+        <label>
+          <span class="t t-az">Yanlış qeydiyyatlar:</span>
+          <span class="t t-ru">Неверно оформленные заявки:</span>
+        </label>
+        <input type="number" id="office_wrong" min="0">
+      </div>
+      <div class="field">
+        <label>
+          <span class="t t-az">Orta reaksiya müddəti (dəq.):</span>
+          <span class="t t-ru">Среднее время реакции (мин):</span>
+        </label>
+        <input type="number" id="office_response_time" min="0" step="0.1">
+      </div>
+    </div>
+
+    <div class="field">
+      <label>
+        <span class="t t-az">Həftənin əsas səhvləri:</span>
+        <span class="t t-ru">Основные ошибки недели:</span>
+      </label>
+      <textarea id="office_errors"></textarea>
+    </div>
+
+    <div class="field">
+      <label>
+        <span class="t t-az">Yaxşılaşdırma təklifləri:</span>
+        <span class="t t-ru">Предложения по улучшению:</span>
+      </label>
+      <textarea id="office_suggestions"></textarea>
+    </div>
+  </div>
+
+  <!-- SMM -->
+  <div class="form-section" id="form-smm">
+    <div class="section-title">SMM — Weekly</div>
+    <div class="section-subtitle">
+      <span class="t t-az">Kontent, müraciətlər və izləyici artımı.</span>
+      <span class="t t-ru">Контент, заявки и рост подписчиков.</span>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>Postlar / Посты:</label>
+        <input type="number" id="smm_posts" min="0">
+      </div>
+      <div class="field">
+        <label>Story / Сторис:</label>
+        <input type="number" id="smm_stories" min="0">
+      </div>
+      <div class="field">
+        <label>
+          <span class="t t-az">Sosial şəbəkələrdən gələn müraciətlər:</span>
+          <span class="t t-ru">Заявки из соцсетей:</span>
+        </label>
+        <input type="number" id="smm_leads" min="0">
+      </div>
+      <div class="field">
+        <label>
+          <span class="t t-az">İzləyicilərin artımı:</span>
+          <span class="t t-ru">Рост подписчиков:</span>
+        </label>
+        <input type="number" id="smm_followers_growth" min="0">
+      </div>
+    </div>
+
+    <div class="field">
+      <label>
+        <span class="t t-az">Həftənin ən yaxşı postu (link və təsvir):</span>
+        <span class="t t-ru">Лучший пост недели (ссылка и описание):</span>
+      </label>
+      <textarea id="smm_best_post"></textarea>
+    </div>
+
+    <div class="field">
+      <label>
+        <span class="t t-az">Növbəti həftə üçün ideyalar:</span>
+        <span class="t t-ru">Идеи на следующую неделю:</span>
+      </label>
+      <textarea id="smm_next_ideas"></textarea>
+    </div>
+  </div>
+
+  <!-- MARKETING -->
+  <div class="form-section" id="form-marketing">
+    <div class="section-title">
+      <span class="t t-az">Marketinq — həftəlik yekun</span>
+      <span class="t t-ru">Маркетинг — итоги недели</span>
+    </div>
+    <div class="section-subtitle">
+      <span class="t t-az">Lidlər, kampaniyalar və analitika.</span>
+      <span class="t t-ru">Лиды, кампании и аналитика.</span>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>Lead-lər / Лиды (cəmi):</label>
+        <input type="number" id="mkt_total_leads" min="0">
+      </div>
+      <div class="field">
+        <label>
+          <span class="t t-az">Orta lead dəyəri (AZN):</span>
+          <span class="t t-ru">Средняя стоимость лида (AZN):</span>
+        </label>
+        <input type="number" id="mkt_cpl" min="0" step="0.01">
+      </div>
+      <div class="field">
+        <label>
+          <span class="t t-az">Aktiv kanallar:</span>
+          <span class="t t-ru">Активные каналы:</span>
+        </label>
+        <input type="number" id="mkt_channels" min="0">
+      </div>
+    </div>
+
+    <div class="field">
+      <label>
+        <span class="t t-az">Aktiv kampaniyalar:</span>
+        <span class="t t-ru">Активные кампании:</span>
+      </label>
+      <textarea id="mkt_campaigns"></textarea>
+    </div>
+
+    <div class="field">
+      <label>
+        <span class="t t-az">Əsas nəticələr və analitika:</span>
+        <span class="t t-ru">Основные выводы по аналитике:</span>
+      </label>
+      <textarea id="mkt_insights"></textarea>
+    </div>
+
+    <div class="field">
+      <label>
+        <span class="t t-az">Növbəti həftə üçün prioritetlər:</span>
+        <span class="t t-ru">Приоритеты на следующую неделю:</span>
+      </label>
+      <textarea id="mkt_next_priorities"></textarea>
+    </div>
+  </div>
+
+  <!-- ACCOUNTANT -->
+  <div class="form-section" id="form-accountant">
+    <div class="section-title">
+      <span class="t t-az">Mühasib — həftəlik yekun</span>
+      <span class="t t-ru">Бухгалтер — итоги недели</span>
+    </div>
+    <div class="section-subtitle">
+      <span class="t t-az">Ödənişlər və debitor borclar.</span>
+      <span class="t t-ru">Платежи и дебиторская задолженность.</span>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>
+          <span class="t t-az">Gələn ödənişlər (AZN):</span>
+          <span class="t t-ru">Входящие платежи (AZN):</span>
+        </label>
+        <input type="number" id="acc_in_amount" min="0" step="0.01">
+      </div>
+      <div class="field">
+        <label>
+          <span class="t t-az">Gedən ödənişlər (AZN):</span>
+          <span class="t t-ru">Исходящие платежи (AZN):</span>
+        </label>
+        <input type="number" id="acc_out_amount" min="0" step="0.01">
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>
+          <span class="t t-az">Cari debitor borc (AZN):</span>
+          <span class="t t-ru">Текущая дебиторка (AZN):</span>
+        </label>
+        <input type="number" id="acc_deb_current" min="0" step="0.01">
+      </div>
+      <div class="field">
+        <label>
+          <span class="t t-az">Gecikmiş debitor borc (AZN):</span>
+          <span class="t t-ru">Просроченная дебиторка (AZN):</span>
+        </label>
+        <input type="number" id="acc_deb_overdue" min="0" step="0.01">
+      </div>
+    </div>
+
+    <div class="field">
+      <label>
+        <span class="t t-az">Vergi və hesabat hadisələri:</span>
+        <span class="t t-ru">Налоговые и отчётные события:</span>
+      </label>
+      <textarea id="acc_tax_events"></textarea>
+    </div>
+
+    <div class="field">
+      <label>
+        <span class="t t-az">Risklər və şərhlər:</span>
+        <span class="t t-ru">Риски и комментарии:</span>
+      </label>
+      <textarea id="acc_risks"></textarea>
+    </div>
+  </div>
+
+  <!-- Кнопка отправки -->
+  <div class="footer-row">
+    <div class="left-meta">
+      <span class="t t-az">
+        Məlumat Google Sheet-ə JSON formatında ötürüləcək.
+      </span>
+      <span class="t t-ru">
+        Данные будут отправлены в Google Sheet в формате JSON.
+      </span>
+    </div>
+    <button class="btn-primary" id="submitBtn">
+      <span class="t t-az">Göndər</span>
+      <span class="t t-ru">Отправить</span>
+    </button>
+  </div>
+
+  <div class="status" id="status"></div>
+  <div class="hint">
+    <span class="t t-az">
+      Apps Script-də URL-ni <strong>YOUR_GOOGLE_SCRIPT_URL</strong> ilə əvəz edin və JSON-u emal edin.
+    </span>
+    <span class="t t-ru">
+      В Apps Script укажи свой <strong>YOUR_GOOGLE_SCRIPT_URL</strong> и обработай JSON.
+    </span>
+  </div>
+</div>
+
+<script>
+  // 🔧 ТУТ УКАЖИ СВОЙ WebApp URL из Google Apps Script
+  const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyrb3vA5bb_5tzJXJTzihRbrS-6e415-MwEhro3jPMvpEMJC-BCxqP5E2ESTq8Rkp3g/exec";
+
+  // Переключение языка
+  const langButtons = document.querySelectorAll(".lang-btn");
+  const htmlRoot = document.documentElement;
+
+  langButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const lang = btn.getAttribute("data-lang");
+      langButtons.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      htmlRoot.classList.toggle("lang-ru", lang === "ru");
+      htmlRoot.classList.toggle("lang-az", lang === "az");
+    });
+  });
+
+  // Переключение ролей
+  const roleCards = document.querySelectorAll(".role-card");
+  const sections = {
+    sales: document.getElementById("form-sales"),
+    service: document.getElementById("form-service"),
+    office: document.getElementById("form-office"),
+    smm: document.getElementById("form-smm"),
+    marketing: document.getElementById("form-marketing"),
+    accountant: document.getElementById("form-accountant")
+  };
+
+  let currentRole = "sales";
+
+  roleCards.forEach(card => {
+    card.addEventListener("click", () => {
+      const role = card.getAttribute("data-role");
+      currentRole = role;
+      roleCards.forEach(c => c.classList.remove("active"));
+      card.classList.add("active");
+      Object.keys(sections).forEach(key => {
+        sections[key].classList.toggle("active", key === role);
+      });
+    });
+  });
+
+  // Сбор данных по ролям
+  function getRoleData(role) {
+    const data = { role };
+
+    if (role === "sales") {
+      data.total_leads = +document.getElementById("sales_total_leads").value || 0;
+      data.new_leads = +document.getElementById("sales_new_leads").value || 0;
+      data.calls = +document.getElementById("sales_calls").value || 0;
+      data.offers = +document.getElementById("sales_offers").value || 0;
+      data.meetings = +document.getElementById("sales_meetings").value || 0;
+      data.new_deals = +document.getElementById("sales_new_deals").value || 0;
+      data.deals_amount = +document.getElementById("sales_deals_amount").value || 0;
+      data.lost_deals = +document.getElementById("sales_lost_deals").value || 0;
+      data.reasons = document.getElementById("sales_reasons").value.trim();
+      data.achievements = document.getElementById("sales_achievements").value.trim();
+      data.next_plan = document.getElementById("sales_next_plan").value.trim();
+    }
+
+    if (role === "service") {
+      data.requests = +document.getElementById("service_requests").value || 0;
+      data.visits = +document.getElementById("service_visits").value || 0;
+      data.revenue = +document.getElementById("service_revenue").value || 0;
+      data.spare_parts = +document.getElementById("service_spare_parts").value || 0;
+      data.downtime_hours = +document.getElementById("service_downtime_hours").value || 0;
+      data.repeats = +document.getElementById("service_repeats").value || 0;
+      data.problems = document.getElementById("service_problems").value.trim();
+      data.complaints = document.getElementById("service_complaints").value.trim();
+      data.next_plan = document.getElementById("service_next_plan").value.trim();
+    }
+
+    if (role === "office") {
+      data.calls = +document.getElementById("office_calls").value || 0;
+      data.registered = +document.getElementById("office_registered").value || 0;
+      data.wrong = +document.getElementById("office_wrong").value || 0;
+      data.response_time = +document.getElementById("office_response_time").value || 0;
+      data.errors = document.getElementById("office_errors").value.trim();
+      data.suggestions = document.getElementById("office_suggestions").value.trim();
+    }
+
+    if (role === "smm") {
+      data.posts = +document.getElementById("smm_posts").value || 0;
+      data.stories = +document.getElementById("smm_stories").value || 0;
+      data.leads = +document.getElementById("smm_leads").value || 0;
+      data.followers_growth = +document.getElementById("smm_followers_growth").value || 0;
+      data.best_post = document.getElementById("smm_best_post").value.trim();
+      data.next_ideas = document.getElementById("smm_next_ideas").value.trim();
+    }
+
+    if (role === "marketing") {
+      data.total_leads = +document.getElementById("mkt_total_leads").value || 0;
+      data.cpl = +document.getElementById("mkt_cpl").value || 0;
+      data.channels = +document.getElementById("mkt_channels").value || 0;
+      data.campaigns = document.getElementById("mkt_campaigns").value.trim();
+      data.insights = document.getElementById("mkt_insights").value.trim();
+      data.next_priorities = document.getElementById("mkt_next_priorities").value.trim();
+    }
+
+    if (role === "accountant") {
+      data.in_amount = +document.getElementById("acc_in_amount").value || 0;
+      data.out_amount = +document.getElementById("acc_out_amount").value || 0;
+      data.deb_current = +document.getElementById("acc_deb_current").value || 0;
+      data.deb_overdue = +document.getElementById("acc_deb_overdue").value || 0;
+      data.tax_events = document.getElementById("acc_tax_events").value.trim();
+      data.risks = document.getElementById("acc_risks").value.trim();
+    }
+
+    return data;
+  }
+
+  // Отправка
+  document.getElementById("submitBtn").addEventListener("click", function () {
+    const statusEl = document.getElementById("status");
+    statusEl.className = "status";
+    statusEl.textContent = "";
+
+    const weekStart = document.getElementById("weekStart").value;
+    const weekEnd = document.getElementById("weekEnd").value;
+    const employee = document.getElementById("employeeName").value.trim();
+    const department = document.getElementById("department").value.trim();
+    const lang = htmlRoot.classList.contains("lang-az") ? "AZ" : "RU";
+
+    if (!weekStart || !weekEnd) {
+      statusEl.textContent = lang === "AZ"
+        ? "Xahiş olunur həftənin başlanğıc və son tarixini seçin."
+        : "Укажите начало и конец недели.";
+      statusEl.classList.add("err");
+      return;
+    }
+
+    if (!employee || !department) {
+      statusEl.textContent = lang === "AZ"
+        ? "Ad, soyad və şöbə mütləqdir."
+        : "ФИО и отдел обязательны.";
+      statusEl.classList.add("err");
+      return;
+    }
+
+    const payload = {
+      periodType: "week",
+      weekStart: weekStart,
+      weekEnd: weekEnd,
+      employee: employee,
+      department: department,
+      role: currentRole,
+      language: lang,
+      dataJSON: JSON.stringify(getRoleData(currentRole)),
+      isLate: false,
+      isSuspicious: false,
+      businessFlags: ""
+    };
+
+    const btn = this;
+    btn.disabled = true;
+
+    fetch(GOOGLE_SCRIPT_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(payload)
+    }).then(() => {
+      statusEl.textContent = lang === "AZ"
+        ? "Həftəlik hesabat göndərildi."
+        : "Недельный отчёт отправлен.";
+      statusEl.classList.add("ok");
+      btn.disabled = false;
+    }).catch(err => {
+      console.error(err);
+      statusEl.textContent = lang === "AZ"
+        ? "Göndərmə zamanı xəta."
+        : "Ошибка при отправке.";
+      statusEl.classList.add("err");
+      btn.disabled = false;
+    });
+  });
+</script>
+</body>
+</html> 
